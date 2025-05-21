@@ -516,7 +516,7 @@
 
                     <h4 class="sub-step-title ml-10">Payload-ul Cererii (Request Body - JSON):</h4>
                     <p class="text-slate-700 ml-14">Corpul cererii trebuie să fie un obiect JSON. Iată câmpurile acceptate:</p>
-                    <ul class="list-disc list-inside space-y-1 text-slate-700 ml-18 mb-4">
+                    <ul class="list-disc list-inside space-y-1 text-slate-700 ml-14 mb-4">
                         <li>`cv_text` (Opțional, string): Textul integral al CV-ului.</li>
                         <li>`cv_file_payload` (Opțional, obiect): Folosit dacă CV-ul este trimis ca URL.
                             <ul class="list-circle list-inside ml-6">
@@ -699,7 +699,7 @@ curl -X GET "http://localhost:8000/status/cv/ID_PROCESARE_PRIMIT"
 
                     <h4 class="sub-step-title ml-10">Construirea Payload-ului `multipart/form-data` pentru Actualizare:</h4>
                     <p class="text-slate-700 ml-14">Va trebui să construiți corpul cererii `multipart/form-data` cu datele extrase de Gemini, mapate la câmpurile standard și custom din Recruit CRM.</p>
-                    <ul class="list-disc list-inside space-y-1 text-slate-700 ml-18">
+                    <ul class="list-disc list-inside space-y-1 text-slate-700 ml-14">
                         <li>**Câmpuri Standard:** Populați câmpurile standard direct (ex: `email`, `linkedin`, `candidate_summary` cu `overall_assessment_by_llm.key_strengths_summary`, `skill` cu un string concatenat din `skills.technical_skills`).</li>
                         <li>**`custom_fields`:** Pentru fiecare câmp custom pe care doriți să-l actualizați, veți include o pereche `field_id` (din maparea dinamică) și `value`.</li>
                     </ul>
