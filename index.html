@@ -12,12 +12,12 @@
         /* CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. */
         body {
             font-family: 'Inter', sans-serif; 
-            line-height: 1.6; /* Default line height for better readability */
+            line-height: 1.6; 
         }
         .tab-active {
-            border-bottom-width: 3px; /* Slightly thicker active border */
+            border-bottom-width: 3px; 
             border-color: #0284c7; /* sky-600 */
-            color: #0284c7; /* sky-600 */
+            color: #0284c7; 
             font-weight: 600;
         }
         .tab-button {
@@ -53,35 +53,35 @@
             display: flex;
             flex-direction: column;
             justify-content: center; 
-            padding: 1rem; /* p-4 */
+            padding: 1rem; 
         }
         .flow-step:hover {
-            transform: translateY(-4px); /* Slightly more lift */
-            box-shadow: 0 6px 16px rgba(0,0,0,0.12); /* Enhanced shadow */
+            transform: translateY(-4px); 
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12); 
         }
         .flow-arrow {
-            font-size: 1.75rem; /* text-3xl for better visibility */
-            color: #0ea5e9; /* sky-500 */
+            font-size: 1.75rem; 
+            color: #0ea5e9; 
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 90px; 
         }
         .code-block {
-            background-color: #1e293b; /* slate-800 */
-            color: #e2e8f0; /* slate-200 */
-            padding: 1.25rem; /* p-5 */
-            border-radius: 0.5rem; /* rounded-lg */
+            background-color: #1e293b; 
+            color: #e2e8f0; 
+            padding: 1.25rem; 
+            border-radius: 0.5rem; 
             overflow-x: auto;
             font-family: 'Consolas', 'Monaco', 'Courier New', Courier, monospace;
-            font-size: 0.875rem; /* text-sm */
-            line-height: 1.5rem; /* leading-6 for better code readability */
-            margin-top: 0.75rem; /* mt-3 */
-            margin-bottom: 0.75rem; /* mb-3 */
-            border: 1px solid #334155; /* slate-700 */
+            font-size: 0.875rem; 
+            line-height: 1.5rem; 
+            margin-top: 0.75rem; 
+            margin-bottom: 0.75rem; 
+            border: 1px solid #334155; 
         }
         .code-block span.block {
-            display: block; /* Ensures each line is on its own */
+            display: block; 
         }
         .expand-button {
             transition: color 0.2s ease;
@@ -95,82 +95,82 @@
         }
         .expand-button.open::after {
             transform: rotate(180deg);
-            content: ' ▲'; /* Kept for consistency, rotation handles visual change */
+            content: ' ▲'; 
         }
         .step-counter {
             background-color: #0284c7; 
             color: white;
             border-radius: 50%;
-            width: 2.25rem; /* w-9 */
-            height: 2.25rem; /* h-9 */
+            width: 2.25rem; 
+            height: 2.25rem; 
             display: inline-flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            margin-right: 1rem; /* mr-4 */
+            margin-right: 1rem; 
             flex-shrink: 0; 
         }
-        h2.section-title { /* Custom class for main section titles */
-            font-size: 1.75rem; /* text-3xl */
-            font-weight: 700; /* font-bold */
-            color: #0c4a6e; /* sky-800 */
-            margin-bottom: 1.5rem; /* mb-6 */
-            padding-bottom: 0.5rem; /* pb-2 */
-            border-bottom: 2px solid #e0f2fe; /* sky-100 */
+        h2.section-title { 
+            font-size: 1.75rem; 
+            font-weight: 700; 
+            color: #0c4a6e; 
+            margin-bottom: 1.5rem; 
+            padding-bottom: 0.5rem; 
+            border-bottom: 2px solid #e0f2fe; 
         }
         h3.step-title {
             display: flex;
             align-items: center;
-            font-size: 1.5rem; /* text-2xl */
+            font-size: 1.5rem; 
             font-weight: 600; 
             color: #0369a1; 
-            margin-bottom: 1rem; /* mb-4 */
+            margin-bottom: 1rem; 
         }
          h4.sub-step-title {
-            font-size: 1.125rem; /* text-lg */
+            font-size: 1.125rem; 
             font-weight: 600; 
             color: #075985; 
-            margin-top: 1.25rem; /* mt-5 */
-            margin-bottom: 0.75rem; /* mb-3 */
+            margin-top: 1.25rem; 
+            margin-bottom: 0.75rem; 
         }
         .text-content p, .text-content ul, .text-content div > p, .text-content div > ul {
-            margin-bottom: 1rem; /* mb-4 for paragraphs and lists within text-content */
-            line-height: 1.7; /* More relaxed line height for text blocks */
+            margin-bottom: 1rem; 
+            line-height: 1.7; 
         }
         .text-content ul {
-            padding-left: 1.25rem; /* pl-5 for lists */
+            padding-left: 1.25rem; 
         }
         .text-content strong {
-            color: #1e293b; /* slate-800 */
+            color: #1e293b; 
         }
         .note {
-            background-color: #e0f2fe; /* sky-100 */
-            border-left: 4px solid #0ea5e9; /* sky-500 */
+            background-color: #e0f2fe; 
+            border-left: 4px solid #0ea5e9; 
             padding: 1rem;
-            margin-top: 1rem; /* mt-4 */
-            margin-bottom: 1.5rem; /* mb-6 */
-            border-radius: 0.375rem; /* rounded-md */
+            margin-top: 1rem; 
+            margin-bottom: 1.5rem; 
+            border-radius: 0.375rem; 
         }
         .note p {
             margin-bottom: 0.25rem;
-            color: #0c4a6e; /* sky-800 */
+            color: #0c4a6e; 
         }
         .note p.font-semibold {
-            color: #0369a1; /* sky-700 */
+            color: #0369a1; 
         }
         .warning-note {
-            background-color: #fef9c3; /* yellow-100 */
-            border-left: 4px solid #f59e0b; /* amber-500 */
+            background-color: #fef9c3; 
+            border-left: 4px solid #f59e0b; 
             padding: 1rem;
             margin-top: 1rem;
             margin-bottom: 1.5rem;
             border-radius: 0.375rem;
         }
         .warning-note p {
-             color: #78350f; /* amber-900 */
+             color: #78350f; 
         }
          .warning-note p.font-semibold {
-            color: #b45309; /* amber-700 */
+            color: #b45309; 
         }
          .info-note {
             background-color: #f0f9ff; 
@@ -201,7 +201,7 @@
                 <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="schema">Schema de Extracție</button></li>
                 <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="tech">Tehnologii</button></li>
                 <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="setup">Configurare Sistem</button></li>
-                <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="usage">Ghid Utilizare</button></li>
+                <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="usage">Ghid Utilizare API</button></li>
                 <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="recruitcrm">Integrare Recruit CRM</button></li>
                 <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="considerations">Considerații</button></li>
             </ul>
@@ -499,84 +499,132 @@
         </section>
 
         <section id="usage" class="content-section bg-white p-6 sm:p-8 rounded-lg shadow-xl">
-            <h2 class="section-title">Ghid de Utilizare a Sistemului</h2>
+            <h2 class="section-title">Ghid de Utilizare a API-ului</h2>
             <div class="text-content">
                 <p class="mb-8">
-                    Odată ce sistemul backend este configurat și rulează, puteți interacționa cu el prin API-ul expus.
+                    Odată ce sistemul backend este configurat și rulează, puteți interacționa cu el prin API-ul expus. Acest ghid vă arată cum să trimiteți CV-uri pentru procesare și cum să verificați statusul.
                 </p>
             </div>
             <div class="space-y-8">
                 <div>
                     <h3 class="step-title"><span class="step-counter">1</span>Endpoint Webhook: Procesare CV (`POST /webhook/cv`)</h3>
                     <div class="text-content ml-10">
-                        <p>Acesta este endpoint-ul principal pentru a trimite CV-uri spre procesare.</p>
+                        <p>Acesta este endpoint-ul principal pentru a iniția procesarea unui CV. Sistemul acceptă CV-ul fie ca text direct, fie ca un URL către un fișier (PDF, DOCX).</p>
                     </div>
                     <h4 class="sub-step-title ml-10">Securitate:</h4>
-                    <p class="text-slate-700 ml-14">Header HTTP: `X-Webhook-Secret` cu valoarea din `.env`.</p>
+                    <p class="text-slate-700 ml-14">Toate cererile către acest endpoint trebuie să includă header-ul HTTP `X-Webhook-Secret`. Valoarea acestui header trebuie să corespundă cu cea setată în variabila de mediu `WEBHOOK_SECRET` a serverului.</p>
 
-                    <h4 class="sub-step-title ml-10">Payload-ul Cererii (JSON):</h4>
+                    <h4 class="sub-step-title ml-10">Payload-ul Cererii (Request Body - JSON):</h4>
+                    <p class="text-slate-700 ml-14">Corpul cererii trebuie să fie un obiect JSON. Iată câmpurile acceptate:</p>
+                    <ul class="list-disc list-inside space-y-1 text-slate-700 ml-18 mb-4">
+                        <li>`cv_text` (Opțional, string): Textul integral al CV-ului.</li>
+                        <li>`cv_file_payload` (Opțional, obiect): Folosit dacă CV-ul este trimis ca URL.
+                            <ul class="list-circle list-inside ml-6">
+                                <li>`cv_url` (Obligatoriu dacă `cv_file_payload` este prezent, string): URL-ul valid către fișierul CV.</li>
+                                <li>`file_mime_type` (Opțional, string): Tipul MIME al fișierului din URL (ex: "application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"). Ajută la procesarea corectă.</li>
+                            </ul>
+                        </li>
+                        <li>`source_candidate_id` (Opțional, string): Un ID unic al candidatului din sistemul sursă (ex: **`candidate_slug` din Recruit CRM**). Esențial pentru a lega datele procesate înapoi la candidatul corect în sistemul extern și pentru idempotență.</li>
+                        <li>`idempotency_key` (Opțional, string): O cheie unică furnizată de client pentru a preveni procesările duplicate. Dacă este prezentă, are prioritate față de `source_candidate_id` pentru verificarea idempotenței.</li>
+                        <li>`metadata` (Opțional, obiect): Un dicționar pentru a trimite orice metadate suplimentare relevante (ex: `{"job_id": "XYZ123", "source_platform": "RecruitCRM"}`).</li>
+                    </ul>
+                    <div class="info-note ml-14">
+                        <p class="font-semibold">Important:</p>
+                        <p class="text-sm">Trebuie furnizat fie câmpul `cv_text`, fie obiectul `cv_file_payload` cu un `cv_url` valid.</p>
+                    </div>
+
+
+                    <h4 class="sub-step-title ml-10">Exemple de Cereri `curl`:</h4>
+                    <p class="text-slate-700 font-semibold ml-14">a) Trimitere CV ca text (exemplu specific pentru Recruit CRM):</p>
                     <div class="code-block ml-14">
-{
-  "cv_text": "Opțional: Textul CV-ului...",
+# Înlocuiți YOUR_WEBHOOK_SECRET și valorile specifice
+curl -X POST "http://localhost:8000/webhook/cv" \
+-H "Content-Type: application/json" \
+-H "X-Webhook-Secret: YOUR_WEBHOOK_SECRET" \
+-d '{
+  "cv_text": "Nume: Elena Popescu\nEmail: elena.popescu@exemplu.com\nExperienta: ...",
+  "source_candidate_id": "recruitcrm-candidate-slug-123xyz",
+  "idempotency_key": "webhook-recruitcrm-elena-popescu-001",
+  "metadata": {"recruitment_source": "RecruitCRM Event"}
+}'
+                    </div>
+                    <p class="text-slate-700 font-semibold mt-2 ml-14">b) Trimitere CV ca URL (exemplu specific pentru Recruit CRM):</p>
+                    <div class="code-block ml-14">
+# Înlocuiți YOUR_WEBHOOK_SECRET și valorile specifice
+curl -X POST "http://localhost:8000/webhook/cv" \
+-H "Content-Type: application/json" \
+-H "X-Webhook-Secret: YOUR_WEBHOOK_SECRET" \
+-d '{
   "cv_file_payload": {
-    "cv_url": "Opțional: URL către fișierul CV",
-    "file_mime_type": "Opțional: Tipul MIME"
+    "cv_url": "https://url-public-catre-cv-din-recruitcrm.com/cv.pdf",
+    "file_mime_type": "application/pdf"
   },
-  "source_candidate_id": "Opțional: ID candidat sursă",
-  "idempotency_key": "Opțional: Cheie idempotență",
-  "metadata": {"cheie": "valoare"}
-}
-                    </div>
-                    <p class="text-slate-700 ml-14">**Notă:** Furnizați fie `cv_text`, fie `cv_file_payload.cv_url`.</p>
-
-                    <h4 class="sub-step-title ml-10">Exemple `curl`:</h4>
-                    <p class="text-slate-700 font-semibold ml-14">a) CV ca text:</p>
-                    <div class="code-block ml-14">
-# Înlocuiți YOUR_WEBHOOK_SECRET
-curl -X POST "http://localhost:8000/webhook/cv" \
--H "Content-Type: application/json" \
--H "X-Webhook-Secret: YOUR_WEBHOOK_SECRET" \
--d '{"cv_text": "Nume: Ion...", "idempotency_key": "req001"}'
-                    </div>
-                    <p class="text-slate-700 font-semibold mt-2 ml-14">b) CV ca URL:</p>
-                    <div class="code-block ml-14">
-# Înlocuiți YOUR_WEBHOOK_SECRET
-curl -X POST "http://localhost:8000/webhook/cv" \
--H "Content-Type: application/json" \
--H "X-Webhook-Secret: YOUR_WEBHOOK_SECRET" \
--d '{"cv_file_payload": {"cv_url": "https://link.catre/cv.pdf"}}'
+  "source_candidate_id": "recruitcrm-candidate-slug-456abc",
+  "metadata": {"job_application_id": "789"}
+}'
                     </div>
 
-                    <h4 class="sub-step-title ml-10">Răspuns Așteptat (HTTP 202):</h4>
+                    <h4 class="sub-step-title ml-10">Răspuns Așteptat (HTTP 202 Accepted):</h4>
                     <div class="code-block ml-14">
 {
-  "message": "CV primit...",
-  "processing_id": "uuid-generat",
+  "message": "CV primit și procesarea a fost inițiată în fundal.",
+  "processing_id": "uuid-generat-automat-pentru-procesare",
   "status": "pending",
-  "status_url": "http://localhost:8000/status/cv/uuid-generat"
+  "status_url": "http://localhost:8000/status/cv/uuid-generat-automat-pentru-procesare"
 }
                     </div>
+                     <p class="text-slate-700 mt-2 ml-14">Dacă se detectează o cerere duplicat (pe baza `idempotency_key` sau `source_candidate_id`), răspunsul va fi diferit, indicând acest lucru (ex: status `already_received_or_processing`).</p>
                 </div>
 
                 <div>
-                    <h3 class="step-title"><span class="step-counter">2</span>Endpoint Status (`GET /status/cv/{processing_id}`)</h3>
+                    <h3 class="step-title"><span class="step-counter">2</span>Endpoint de Verificare a Statusului (`GET /status/cv/{processing_id}`)</h3>
                      <div class="text-content ml-10">
-                        <p>Interogați starea procesării folosind `processing_id`.</p>
+                        <p>Folosiți `processing_id`-ul obținut în răspunsul de la webhook pentru a interoga periodic starea și rezultatele procesării CV-ului.</p>
                     </div>
                     <h4 class="sub-step-title ml-10">Exemplu `curl`:</h4>
                     <div class="code-block ml-14">
-# Înlocuiți ID_PROCESARE
-curl -X GET "http://localhost:8000/status/cv/ID_PROCESARE"
+# Înlocuiți ID_PROCESARE_PRIMIT cu ID-ul real
+curl -X GET "http://localhost:8000/status/cv/ID_PROCESARE_PRIMIT"
                     </div>
-                    <h4 class="sub-step-title ml-10">Răspuns Așteptat (HTTP 200):</h4>
+                    <h4 class="sub-step-title ml-10">Răspuns Așteptat (HTTP 200 OK):</h4>
+                    <p class="text-slate-700 ml-14">Structura răspunsului variază în funcție de starea procesării:</p>
+                    <p class="text-slate-700 font-semibold mt-2 ml-14">a) Procesare finalizată cu succes:</p>
                     <div class="code-block ml-14">
 {
-  "processing_id": "ID_PROCESARE",
-  "status": "completed", // sau "error", "pending_processing"
-  "extracted_data": { /* datele extrase... */ },
-  // ...alte câmpuri
+  "processing_id": "ID_PROCESARE_PRIMIT",
+  "status": "completed",
+  "received_at_utc": "2024-05-21T10:00:00Z",
+  "updated_at_utc": "2024-05-21T10:00:35Z",
+  "extracted_data": { /* Datele complete extrase conform CV_EXTRACTION_SCHEMA */ },
+  "error_message": null,
+  "processing_time_seconds": 35.0
 }
                     </div>
+                    <p class="text-slate-700 font-semibold mt-2 ml-14">b) Procesare în curs (exemplu):</p>
+                    <div class="code-block ml-14">
+{
+  "processing_id": "ID_PROCESARE_PRIMIT",
+  "status": "pending_processing", 
+  "received_at_utc": "2024-05-21T10:05:00Z",
+  "updated_at_utc": "2024-05-21T10:05:10Z",
+  "extracted_data": null,
+  "error_message": null,
+  "processing_time_seconds": null
+}
+                    </div>
+                     <p class="text-slate-700 font-semibold mt-2 ml-14">c) Eroare în timpul procesării:</p>
+                    <div class="code-block ml-14">
+{
+  "processing_id": "ID_PROCESARE_PRIMIT",
+  "status": "error",
+  "received_at_utc": "2024-05-21T10:10:00Z",
+  "updated_at_utc": "2024-05-21T10:10:05Z",
+  "extracted_data": null,
+  "error_message": "Descrierea detaliată a erorii întâmpinate.",
+  "processing_time_seconds": 5.0
+}
+                    </div>
+                    <p class="text-slate-700 ml-14">Dacă `processing_id` nu este găsit, se va returna un răspuns HTTP 404 Not Found.</p>
                 </div>
             </div>
         </section>
@@ -585,7 +633,7 @@ curl -X GET "http://localhost:8000/status/cv/ID_PROCESARE"
             <h2 class="section-title">Ghid de Integrare cu Recruit CRM</h2>
             <div class="text-content">
             <p class="mb-8">
-                Această secțiune descrie pașii conceptuali și considerațiile pentru integrarea sistemului nostru de procesare a CV-urilor cu platforma Recruit CRM. Scopul este de a automatiza fluxul de la primirea unui candidat în Recruit CRM, trimiterea CV-ului său către serviciul nostru pentru analiză, și actualizarea profilului candidatului în Recruit CRM cu datele structurate extrase.
+                Această secțiune descrie pașii și considerațiile pentru integrarea sistemului nostru de procesare a CV-urilor cu platforma Recruit CRM. Scopul este de a automatiza fluxul: primirea unui candidat în Recruit CRM, trimiterea CV-ului către serviciul nostru pentru analiză, și actualizarea profilului candidatului în Recruit CRM cu datele structurate extrase.
             </p>
             </div>
             <div class="note">
@@ -595,101 +643,75 @@ curl -X GET "http://localhost:8000/status/cv/ID_PROCESARE"
 
             <div class="space-y-8">
                 <div>
-                    <h3 class="step-title"><span class="step-counter">1</span>Trimiterea CV-urilor din Recruit CRM</h3>
-                    <p class="text-slate-700 ml-10">Obiectiv: Când un candidat nou este adăugat sau un CV este actualizat în Recruit CRM, informațiile sunt trimise automat către `/webhook/cv`.</p>
+                    <h3 class="step-title"><span class="step-counter">1</span>Trimiterea CV-urilor din Recruit CRM către Procesatorul Inteligent</h3>
+                    <p class="text-slate-700 ml-10">Obiectiv: Când un nou candidat este adăugat sau un CV este actualizat în Recruit CRM, informațiile sunt trimise automat către endpoint-ul nostru `/webhook/cv`.</p>
                     
                     <h4 class="sub-step-title ml-10">Metoda Recomandată: Webhooks în Recruit CRM</h4>
                     <ul class="list-disc list-inside space-y-2 text-slate-700 ml-14">
-                        <li>**Verificați Capabilitățile Webhook:** Confirmați în Recruit CRM dacă se pot configura webhooks pentru evenimente ca "Candidat Nou Creat" sau "CV Adăugat/Actualizat".</li>
-                        <li>**Configurarea Webhook-ului:**
+                        <li>**Verificați Capabilitățile Webhook:** Confirmați în documentația Recruit CRM dacă se pot configura webhooks pentru evenimente ca "Candidat Nou Creat" sau "CV Adăugat/Actualizat".</li>
+                        <li>**Configurarea Webhook-ului în Recruit CRM:**
                             <ul class="list-circle list-inside ml-6">
-                                <li>**URL Endpoint:** Adresa publică a serviciului nostru FastAPI.</li>
+                                <li>**URL Endpoint:** Adresa publică a serviciului nostru FastAPI (ex: `https://[URL-UL-DVS-CLOUD-RUN]/webhook/cv`).</li>
                                 <li>**Metodă HTTP:** `POST`.</li>
-                                <li>**Format Payload:** Ideal, JSON customizabil. Altfel, un intermediar (Zapier) poate fi necesar.</li>
-                                <li>**Header Securitate:** `X-Webhook-Secret` cu valoarea din `.env`.</li>
+                                <li>**Format Payload:** Ideal, JSON customizabil. Dacă Recruit CRM trimite un format fix, s-ar putea să fie nevoie de un strat intermediar (ex: o funcție Cloud Function simplă sau un serviciu ca Zapier/Make) pentru a transforma payload-ul înainte de a-l trimite API-ului nostru.</li>
+                                <li>**Header Securitate:** Configurați Recruit CRM să trimită un header `X-Webhook-Secret` cu valoarea din `.env`.</li>
                             </ul>
                         </li>
-                        <li>**Date de Trimis în Payload (Ideal):**
+                        <li>**Date Esențiale de Trimis în Payload către API-ul nostru:**
                             <ul class="list-circle list-inside ml-6">
-                                <li>ID-ul Candidatului din Recruit CRM (slug) -> `source_candidate_id`.</li>
-                                <li>Textul CV-ului -> `cv_text`.</li>
-                                <li>URL către Fișierul CV -> `cv_file_payload.cv_url` (și `file_mime_type`).</li>
-                                <li>Alte metadate -> `metadata`.</li>
+                                <li>**`source_candidate_id`**: Trebuie să conțină **`candidate_slug`**-ul unic al candidatului din Recruit CRM. Acesta este crucial pentru a identifica și actualiza corect candidatul ulterior.</li>
+                                <li>**`cv_text` SAU `cv_file_payload.cv_url`**:
+                                    <ul class="list-disc list-inside ml-6">
+                                        <li>Dacă Recruit CRM poate furniza textul CV-ului direct, trimiteți-l în `cv_text`.</li>
+                                        <li>Dacă Recruit CRM oferă un URL public și stabil către fișierul CV (PDF, DOCX), trimiteți-l în `cv_file_payload.cv_url`. Furnizați `cv_file_payload.file_mime_type` dacă este cunoscut.</li>
+                                    </ul>
+                                </li>
+                                <li>**`metadata` (Opțional):** Orice alte ID-uri sau informații relevante din Recruit CRM (ex: ID-ul job-ului asociat, sursa candidatului).</li>
                             </ul>
                         </li>
                     </ul>
-                     <p class="text-slate-700 ml-10">**Alternativă:** Folosirea unui instrument de automatizare (Zapier, Make) dacă webhooks directe sunt limitate.</p>
                 </div>
 
                 <div>
                     <h3 class="step-title"><span class="step-counter">2</span>Procesarea de către Sistemul Nostru</h3>
-                    <p class="text-slate-700 ml-10">Sistemul nostru procesează CV-ul conform fluxului standard. `processing_id` și `source_candidate_id` sunt cheile pentru legătura ulterioară.</p>
+                    <p class="text-slate-700 ml-10">Sistemul nostru primește webhook-ul, validează cererea, gestionează idempotența (folosind `source_candidate_id` dacă `idempotency_key` nu e dat), descarcă și parsează CV-ul (dacă e URL), extrage datele cu Gemini și le salvează în Firestore. `processing_id`-ul generat este unic pentru această operațiune.</p>
                 </div>
 
                 <div>
-                    <h3 class="step-title"><span class="step-counter">3</span>Actualizarea Candidatului în Recruit CRM</h3>
-                    <p class="text-slate-700 ml-10">Datele extrase sunt trimise înapoi în Recruit CRM prin API-ul lor.</p>
+                    <h3 class="step-title"><span class="step-counter">3</span>Actualizarea Candidatului în Recruit CRM (Backend-to-Backend)</h3>
+                    <p class="text-slate-700 ml-10">După ce datele sunt extrase (`status: "completed"` în Firestore), sistemul nostru backend (sau un serviciu adiacent) va iniția un apel API către Recruit CRM pentru a actualiza profilul candidatului.</p>
 
-                    <h4 class="sub-step-title ml-10">Utilizarea API-ului Recruit CRM (`POST /v1/candidates/{candidate_slug}`):</h4>
+                    <h4 class="sub-step-title ml-10">Utilizarea API-ului Recruit CRM: `POST /v1/candidates/{candidate_slug}`</h4>
                      <ul class="list-disc list-inside space-y-2 text-slate-700 ml-14">
-                        <li>**Endpoint:** `POST https://api.recruitcrm.io/v1/candidates/{candidate_slug}`.</li>
-                        <li>**Autentificare:** Token Bearer în header-ul `Authorization`.</li>
-                        <li>**Request Body:** `multipart/form-data`.</li>
-                        <li>**Rate Limiting:** Monitorizați și gestionați limitele de rată (ex: 60 cereri/minut).</li>
+                        <li>**Identificator:** Se folosește `candidate_slug` (stocat la noi ca `source_candidate_id`) în URL-ul endpoint-ului.</li>
+                        <li>**Autentificare:** Cererile necesită un token Bearer (API Token Recruit CRM) în header-ul `Authorization`. Tokenul trebuie stocat securizat (ex: Google Secret Manager).</li>
+                        <li>**Format Request Body:** `multipart/form-data`.</li>
+                        <li>**Rate Limiting:** API-ul Recruit CRM are limite de rată (ex: 60 cereri/minut). Sistemul backend trebuie să gestioneze aceste limite, posibil printr-o coadă de actualizări și reîncercări cu backoff, monitorizând header-ele `X-RateLimit-Limit` și `X-RateLimit-Remaining`.</li>
                     </ul>
 
-                    <h4 class="sub-step-title ml-10">Descoperirea Câmpurilor Custom:</h4>
-                    <p class="text-slate-700 ml-14">Folosiți `GET https://api.recruitcrm.io/v1/custom-fields/candidates` pentru a obține `field_id`, `field_name` și `field_type` pentru câmpurile custom. Acest lucru permite o mapare dinamică.</p>
-                    <div class="code-block ml-14">
-# Răspuns exemplu de la GET /custom-fields/candidates:
-[
-  {
-    "field_id": 123,
-    "field_name": "Nivel Experienta AI",
-    "field_type": "number" 
-  },
-  // ...
-]
+                    <h4 class="sub-step-title ml-10">Descoperirea și Maparea Câmpurilor Custom:</h4>
+                    <p class="text-slate-700 ml-14">Pentru o mapare flexibilă și corectă, folosiți endpoint-ul Recruit CRM `GET /v1/custom-fields/candidates` pentru a obține lista câmpurilor custom definite în contul dvs., împreună cu `field_id`, `field_name` și `field_type`.</p>
+                    <div class="info-note ml-14">
+                        <p class="font-semibold">Strategie de Mapare Dinamică:</p>
+                        <p class="text-sm">1. La pornirea serviciului nostru (sau periodic), apelați `GET /v1/custom-fields/candidates` și stocați (ex: în memorie cache sau într-o configurație) o mapare între numele logice ale câmpurilor pe care doriți să le populați (ex: "Sumar AI CV", "Competențe Tehnice AI") și `field_id`-urile returnate de API-ul Recruit CRM pentru `field_name`-urile corespunzătoare.</p>
+                        <p class="text-sm">2. Când actualizați un candidat, folosiți această mapare pentru a construi corect secțiunea `custom_fields` din payload-ul `multipart/form-data`.</p>
                     </div>
-                    <p class="text-slate-700 ml-14">**Recomandare:** Apelați acest endpoint la configurare pentru a crea o mapare între datele extrase și `field_id`-urile din Recruit CRM.</p>
 
-                    <h4 class="sub-step-title ml-10">Strategia de Mapare a Datelor:</h4>
-                    <ul class="list-disc list-inside space-y-1 text-slate-700 ml-14">
-                        <li>**Câmpuri Standard:** Mapați direct (ex: `email` -> `email`, `linkedin_url` -> `linkedin`).</li>
-                        <li>**Câmpuri Custom:** Folosiți `field_id`-urile obținute pentru a popula câmpurile custom definite în Recruit CRM.
-                            <ul class="list-circle list-inside ml-6">
-                                <li>Pentru array-uri (experiență, educație), creați seturi de câmpuri custom (Experiența 1 - Titlu, etc.) sau stocați un rezumat.</li>
-                            </ul>
-                        </li>
+                    <h4 class="sub-step-title ml-10">Construirea Payload-ului `multipart/form-data` pentru Actualizare:</h4>
+                    <p class="text-slate-700 ml-14">Va trebui să construiți corpul cererii `multipart/form-data` cu datele extrase de Gemini, mapate la câmpurile standard și custom din Recruit CRM.</p>
+                    <ul class="list-disc list-inside space-y-1 text-slate-700 ml-18">
+                        <li>**Câmpuri Standard:** Populați câmpurile standard direct (ex: `email`, `linkedin`, `candidate_summary` cu `overall_assessment_by_llm.key_strengths_summary`, `skill` cu un string concatenat din `skills.technical_skills`).</li>
+                        <li>**`custom_fields`:** Pentru fiecare câmp custom pe care doriți să-l actualizați, veți include o pereche `field_id` (din maparea dinamică) și `value`.</li>
                     </ul>
                      <div class="warning-note ml-14">
-                        <p class="font-semibold">Atenție la `multipart/form-data` pentru `custom_fields`!</p>
-                        <p class="text-sm">Formatul exact pentru trimiterea array-urilor de obiecte (cum ar fi `custom_fields`) în `multipart/form-data` trebuie verificat în documentația Recruit CRM sau prin experimentare.</p>
+                        <p class="font-semibold">Formatul `custom_fields` în `multipart/form-data`:</p>
+                        <p class="text-sm">Documentația Recruit CRM pentru endpoint-ul `POST /v1/candidates/{candidate_slug}` arată un "Request Sample" cu un payload `multipart/form-data` brut. Este **crucial** să determinați din documentația lor sau prin testare cum trebuie structurat un array de obiecte (cum este `custom_fields` în răspunsul JSON) pentru a fi trimis corect într-o cerere `multipart/form-data`. Opțiuni comune sunt trimiterea ca string JSON sau indexarea fiecărui element (ex: `custom_fields[0][field_id]`, `custom_fields[0][value]`).</p>
                     </div>
 
-                    <h4 class="sub-step-title ml-10">Locația Logicii de Actualizare:</h4>
+                    <h4 class="sub-step-title ml-10">Implementarea Logicii de Actualizare:</h4>
                      <ul class="list-disc list-inside space-y-1 text-slate-700 ml-14">
-                        <li>În `background_cv_processing_task` (asincron).</li>
-                        <li>Sau un serviciu separat (ex: Cloud Function) declanșat de Firestore.</li>
-                     </ul>
-                </div>
-
-                <div>
-                    <h3 class="step-title"><span class="step-counter">4</span>Legătura cu CV-ul Original</h3>
-                     <ul class="list-disc list-inside space-y-1 text-slate-700 ml-10">
-                        <li>`source_candidate_id` este cheia.</li>
-                        <li>Opțional, adăugați URL-ul nostru de status în notele candidatului din Recruit CRM.</li>
-                     </ul>
-                </div>
-            
-                <div>
-                    <h3 class="step-title"><span class="step-counter">5</span>Considerații Specifice Recruit CRM</h3>
-                     <ul class="list-disc list-inside space-y-2 text-slate-700 ml-10">
-                        <li><strong class="font-medium">Documentația API Recruit CRM:</strong> Esențială.</li>
-                        <li><strong class="font-medium">Maparea Câmpurilor:</strong> Planificare atentă.</li>
-                        <li><strong class="font-medium">Testare Riguroasă.</strong></li>
-                        <li><strong class="font-medium">Gestionarea Erorilor și Limitelor de Rată.</strong></li>
-                        <li><strong class="font-medium">Confidențialitatea Datelor (GDPR).</strong></li>
+                        <li>**În `background_cv_processing_task`:** Adăugați logica de apelare a API-ului Recruit CRM după ce datele Gemini sunt extrase cu succes. Folosiți `aiohttp` pentru apeluri asincrone sau rulați `requests` într-un executor de thread-uri.</li>
+                        <li>**Serviciu Separat (Recomandat pentru robustețe):** O funcție Cloud Function (sau un alt microserviciu) declanșată de scrierea în Firestore (când `status` devine `completed`). Aceasta decuplează responsabilitățile și permite o gestionare mai bună a reîncercărilor și a limitelor de rată specifice API-ului Recruit CRM.</li>
                      </ul>
                 </div>
             </div>
@@ -877,7 +899,7 @@ curl -X GET "http://localhost:8000/status/cv/ID_PROCESARE"
         const tabs = document.querySelectorAll('.tab-button');
         const contentSections = document.querySelectorAll('.content-section');
         
-        function showTab(tabId) {
+        function showTab(tabId, event) { // Added event parameter
             tabs.forEach(tab => {
                 if (tab.dataset.tab === tabId) {
                     tab.classList.add('tab-active');
@@ -892,8 +914,7 @@ curl -X GET "http://localhost:8000/status/cv/ID_PROCESARE"
                     section.classList.remove('active');
                 }
             });
-             // Only scroll if not navigating via popstate (back/forward buttons)
-            if (event && event.type === 'click') {
+            if (event && event.type === 'click') { // Only scroll on direct click
                  window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
@@ -915,7 +936,7 @@ curl -X GET "http://localhost:8000/status/cv/ID_PROCESARE"
                     header.className = 'flex justify-between items-start gap-x-4';
 
                     const titleContainer = document.createElement('div');
-                    titleContainer.className = 'flex-grow min-w-0'; // Allow title to shrink if needed
+                    titleContainer.className = 'flex-grow min-w-0'; 
                     const title = document.createElement('h4');
                     title.className = `text-md font-semibold ${level === 0 ? 'text-sky-700' : 'text-sky-600'} schema-key`;
                     let titleText = key;
@@ -936,7 +957,7 @@ curl -X GET "http://localhost:8000/status/cv/ID_PROCESARE"
                     div.appendChild(header);
 
                     const detailsDiv = document.createElement('div');
-                    detailsDiv.className = 'schema-details mt-2 text-sm space-y-1'; // Added space-y-1
+                    detailsDiv.className = 'schema-details mt-2 text-sm space-y-1'; 
                     
                     if (item && item.type) {
                          const typeP = document.createElement('p');
@@ -991,15 +1012,15 @@ curl -X GET "http://localhost:8000/status/cv/ID_PROCESARE"
         document.addEventListener('DOMContentLoaded', () => {
             const hash = window.location.hash.substring(1);
             const initialTab = hash || 'overview';
-            showTab(initialTab); // Show initial tab without smooth scroll
+            showTab(initialTab, null); // Pass null for event on initial load
 
             tabs.forEach(tab => {
                 if (tab.dataset.tab === initialTab) {
                     tab.classList.add('tab-active');
                 }
-                 tab.addEventListener('click', (event) => { // Pass event to showTab
+                 tab.addEventListener('click', (event) => { 
                     const tabId = tab.dataset.tab;
-                    showTab(tabId, event); // Pass event
+                    showTab(tabId, event); 
                     history.pushState(null, null, `#${tabId}`);
                 });
             });
@@ -1010,7 +1031,7 @@ curl -X GET "http://localhost:8000/status/cv/ID_PROCESARE"
 
             window.addEventListener('popstate', () => {
                 const hash = window.location.hash.substring(1);
-                showTab(hash || 'overview'); // Show tab on back/forward, no smooth scroll
+                showTab(hash || 'overview', null); // Pass null for event on popstate
                  tabs.forEach(tab => {
                     if (tab.dataset.tab === (hash || 'overview')) {
                         tab.classList.add('tab-active');
