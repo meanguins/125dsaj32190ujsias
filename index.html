@@ -7,17 +7,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Chosen Palette: Calm Neutrals with Sky Blue Accent */
-        /* Application Structure Plan: Single-page application with tab-based navigation (Prezentare Generală, Funcționalități, Schema de Extracție, Tehnologii, Considerații, Configurare Sistem, Ghid Utilizare). Content displayed dynamically. Interactive schema viewer. Data flow diagram visualization. Designed for easy understanding of the backend system's technical specifications, setup, and usage. */
-        /* Visualization & Content Choices: Overview: Text, HTML/CSS data flow diagram. Features: Clickable text sections. Data Schema: Interactive nested list for CV_EXTRACTION_SCHEMA. Tech Stack: List. Considerations: Expandable text. Setup & Usage: Detailed step-by-step text, code blocks for examples. No Chart.js/Plotly as report is spec, not data. Focus on HTML/CSS for visuals. NO SVG/Mermaid. */
+        /* Application Structure Plan: Single-page application with tab-based navigation (Prezentare Generală, Funcționalități, Schema de Extracție, Tehnologii, Configurare Sistem, Ghid Utilizare, Integrare Recruit CRM, Considerații). Content displayed dynamically. Interactive schema viewer. Data flow diagram visualization. Designed for easy understanding of the backend system's technical specifications, setup, usage, and specific CRM integration. */
+        /* Visualization & Content Choices: Overview: Text, HTML/CSS data flow diagram. Features: Clickable text sections. Data Schema: Interactive nested list for CV_EXTRACTION_SCHEMA. Tech Stack: List. Considerations: Expandable text. Setup & Usage & Recruit CRM: Detailed step-by-step text, code blocks for examples. No Chart.js/Plotly as report is spec, not data. Focus on HTML/CSS for visuals. NO SVG/Mermaid. */
         /* CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. */
         body {
             font-family: 'Inter', sans-serif; 
+            line-height: 1.6; /* Default line height for better readability */
         }
         .tab-active {
-            border-bottom-width: 2px;
+            border-bottom-width: 3px; /* Slightly thicker active border */
             border-color: #0284c7; /* sky-600 */
             color: #0284c7; /* sky-600 */
             font-weight: 600;
+        }
+        .tab-button {
+             transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
         }
         .content-section {
             display: none;
@@ -28,571 +32,706 @@
         .schema-key {
             cursor: pointer;
             font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .schema-key:hover {
+            color: #0ea5e9; /* sky-500 */
         }
         .schema-details {
             display: none;
-            padding-left: 1.5rem; /* pl-6 */
-            border-left: 2px solid #e5e7eb; /* gray-200 */
-            margin-left: 0.5rem; /* ml-2 */
+            padding-left: 1.5rem; 
+            border-left: 2px solid #d1d5db; /* gray-300 */
+            margin-left: 0.75rem; /* ml-3 */
+            margin-top: 0.5rem; /* mt-2 */
         }
         .schema-details.open {
             display: block;
         }
         .flow-step {
-            min-height: 80px; 
+            min-height: 90px; 
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
             justify-content: center; 
+            padding: 1rem; /* p-4 */
         }
         .flow-step:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-4px); /* Slightly more lift */
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12); /* Enhanced shadow */
         }
         .flow-arrow {
-            font-size: 1.5rem; /* text-2xl */
-            line-height: 2rem; /* leading-8 */
-            color: #38bdf8; /* sky-400 */
+            font-size: 1.75rem; /* text-3xl for better visibility */
+            color: #0ea5e9; /* sky-500 */
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 80px; 
+            min-height: 90px; 
         }
         .code-block {
-            background-color: #1f2937; /* gray-800 */
-            color: #f3f4f6; /* gray-100 */
-            padding: 1rem;
+            background-color: #1e293b; /* slate-800 */
+            color: #e2e8f0; /* slate-200 */
+            padding: 1.25rem; /* p-5 */
             border-radius: 0.5rem; /* rounded-lg */
             overflow-x: auto;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Consolas', 'Monaco', 'Courier New', Courier, monospace;
             font-size: 0.875rem; /* text-sm */
-            line-height: 1.25rem;
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
+            line-height: 1.5rem; /* leading-6 for better code readability */
+            margin-top: 0.75rem; /* mt-3 */
+            margin-bottom: 0.75rem; /* mb-3 */
+            border: 1px solid #334155; /* slate-700 */
+        }
+        .code-block span.block {
+            display: block; /* Ensures each line is on its own */
+        }
+        .expand-button {
+            transition: color 0.2s ease;
         }
         .expand-button::after {
             content: ' ▼';
             font-size: 0.75em;
-            margin-left: 4px;
+            margin-left: 6px;
+            display: inline-block;
+            transition: transform 0.2s ease;
         }
         .expand-button.open::after {
-            content: ' ▲';
+            transform: rotate(180deg);
+            content: ' ▲'; /* Kept for consistency, rotation handles visual change */
         }
         .step-counter {
-            background-color: #0284c7; /* sky-600 */
+            background-color: #0284c7; 
             color: white;
             border-radius: 50%;
-            width: 2rem; /* w-8 */
-            height: 2rem; /* h-8 */
+            width: 2.25rem; /* w-9 */
+            height: 2.25rem; /* h-9 */
             display: inline-flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            margin-right: 0.75rem; /* mr-3 */
+            margin-right: 1rem; /* mr-4 */
+            flex-shrink: 0; 
+        }
+        h2.section-title { /* Custom class for main section titles */
+            font-size: 1.75rem; /* text-3xl */
+            font-weight: 700; /* font-bold */
+            color: #0c4a6e; /* sky-800 */
+            margin-bottom: 1.5rem; /* mb-6 */
+            padding-bottom: 0.5rem; /* pb-2 */
+            border-bottom: 2px solid #e0f2fe; /* sky-100 */
         }
         h3.step-title {
             display: flex;
             align-items: center;
-            font-size: 1.25rem; /* text-xl */
-            font-weight: 600; /* font-semibold */
-            color: #0369a1; /* sky-700 */
-            margin-bottom: 0.75rem; /* mb-3 */
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 600; 
+            color: #0369a1; 
+            margin-bottom: 1rem; /* mb-4 */
         }
          h4.sub-step-title {
             font-size: 1.125rem; /* text-lg */
-            font-weight: 600; /* font-semibold */
-            color: #075985; /* sky-800 */
+            font-weight: 600; 
+            color: #075985; 
+            margin-top: 1.25rem; /* mt-5 */
+            margin-bottom: 0.75rem; /* mb-3 */
+        }
+        .text-content p, .text-content ul, .text-content div > p, .text-content div > ul {
+            margin-bottom: 1rem; /* mb-4 for paragraphs and lists within text-content */
+            line-height: 1.7; /* More relaxed line height for text blocks */
+        }
+        .text-content ul {
+            padding-left: 1.25rem; /* pl-5 for lists */
+        }
+        .text-content strong {
+            color: #1e293b; /* slate-800 */
+        }
+        .note {
+            background-color: #e0f2fe; /* sky-100 */
+            border-left: 4px solid #0ea5e9; /* sky-500 */
+            padding: 1rem;
             margin-top: 1rem; /* mt-4 */
-            margin-bottom: 0.5rem; /* mb-2 */
+            margin-bottom: 1.5rem; /* mb-6 */
+            border-radius: 0.375rem; /* rounded-md */
+        }
+        .note p {
+            margin-bottom: 0.25rem;
+            color: #0c4a6e; /* sky-800 */
+        }
+        .note p.font-semibold {
+            color: #0369a1; /* sky-700 */
+        }
+        .warning-note {
+            background-color: #fef9c3; /* yellow-100 */
+            border-left: 4px solid #f59e0b; /* amber-500 */
+            padding: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
+        }
+        .warning-note p {
+             color: #78350f; /* amber-900 */
+        }
+         .warning-note p.font-semibold {
+            color: #b45309; /* amber-700 */
+        }
+         .info-note {
+            background-color: #f0f9ff; 
+            border-left: 4px solid #0ea5e9; 
+            padding: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.375rem;
         }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-slate-100 text-slate-800 antialiased">
+<body class="bg-slate-100 text-slate-700 antialiased">
 
     <header class="bg-sky-700 text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <h1 class="text-2xl sm:text-3xl font-bold text-center">Specificații Interactive & Ghid - Procesator Inteligent de CV-uri</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold text-center tracking-tight">Specificații Interactive & Ghid - Procesator Inteligent de CV-uri</h1>
         </div>
     </header>
 
     <nav class="bg-white shadow-md sticky top-[68px] sm:top-[76px] z-40">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <ul class="flex flex-wrap justify-center sm:justify-start space-x-2 sm:space-x-4 -mb-px">
-                <li><button class="tab-button inline-block p-3 sm:p-4 text-sm sm:text-base text-slate-600 hover:text-sky-600" data-tab="overview">Prezentare Generală</button></li>
-                <li><button class="tab-button inline-block p-3 sm:p-4 text-sm sm:text-base text-slate-600 hover:text-sky-600" data-tab="features">Funcționalități</button></li>
-                <li><button class="tab-button inline-block p-3 sm:p-4 text-sm sm:text-base text-slate-600 hover:text-sky-600" data-tab="schema">Schema de Extracție</button></li>
-                <li><button class="tab-button inline-block p-3 sm:p-4 text-sm sm:text-base text-slate-600 hover:text-sky-600" data-tab="tech">Tehnologii</button></li>
-                <li><button class="tab-button inline-block p-3 sm:p-4 text-sm sm:text-base text-slate-600 hover:text-sky-600" data-tab="setup">Configurare Sistem</button></li>
-                <li><button class="tab-button inline-block p-3 sm:p-4 text-sm sm:text-base text-slate-600 hover:text-sky-600" data-tab="usage">Ghid Utilizare</button></li>
-                <li><button class="tab-button inline-block p-3 sm:p-4 text-sm sm:text-base text-slate-600 hover:text-sky-600" data-tab="considerations">Considerații</button></li>
+            <ul class="flex flex-wrap justify-center sm:justify-start -mb-px">
+                <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="overview">Prezentare Generală</button></li>
+                <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="features">Funcționalități</button></li>
+                <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="schema">Schema de Extracție</button></li>
+                <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="tech">Tehnologii</button></li>
+                <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="setup">Configurare Sistem</button></li>
+                <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="usage">Ghid Utilizare</button></li>
+                <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="recruitcrm">Integrare Recruit CRM</button></li>
+                <li><button class="tab-button inline-block py-3 px-3 sm:py-4 sm:px-4 text-sm sm:text-base text-slate-600 hover:text-sky-600 hover:border-sky-500" data-tab="considerations">Considerații</button></li>
             </ul>
         </div>
     </nav>
 
-    <main class="container mx-auto p-4 sm:p-6 lg:p-8 mt-4">
-        <section id="overview" class="content-section bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold text-sky-700 mb-4">Prezentare Generală a Sistemului</h2>
-            <p class="mb-4 text-slate-700 leading-relaxed">
-                Această aplicație interactivă vă ghidează prin specificațiile tehnice, configurarea și utilizarea sistemului nostru avansat de procesare automată a CV-urilor. Sistemul este conceput ca o soluție robustă și scalabilă, menită să eficientizeze extragerea informațiilor structurate din CV-uri, utilizând cele mai noi tehnologii de inteligență artificială.
-            </p>
-            <div class="mb-6">
-                <h3 class="text-xl font-semibold text-sky-600 mb-3">Arhitectura Sistemului și Tehnologii Cheie</h3>
-                <p class="mb-3 text-slate-700">Sistemul este construit ca o aplicație web FastAPI, containerizată cu Docker și optimizată pentru implementare pe platforme serverless precum Google Cloud Run.</p>
-                <ul class="list-disc list-inside space-y-1 text-slate-700">
-                    <li><strong class="text-slate-800">API Backend:</strong> Dezvoltat în Python folosind framework-ul FastAPI.</li>
-                    <li><strong class="text-slate-800">Inteligență Artificială Generativă:</strong> Utilizează modelul `gemini-2.5-flash-preview-05-20` de la Google, accesat prin SDK-ul `google-genai`.</li>
-                    <li><strong class="text-slate-800">Bază de Date NoSQL:</strong> Google Cloud Firestore în modul Nativ.</li>
-                    <li><strong class="text-slate-800">Platformă de Rulare (Recomandată):</strong> Google Cloud Run.</li>
-                    <li><strong class="text-slate-800">Containerizare:</strong> Docker.</li>
-                </ul>
-            </div>
-
-            <div>
-                <h3 class="text-xl font-semibold text-sky-600 mb-4">Fluxul de Date (End-to-End)</h3>
-                <p class="mb-4 text-slate-700">Următoarea diagramă ilustrează pașii principali în procesarea unui CV, de la primirea acestuia până la stocarea datelor extrase.</p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-stretch mb-4">
-                    <div class="flow-step bg-sky-50 p-4 rounded-lg shadow text-center">
-                        <span class="text-3xl mb-2">📥</span>
-                        <h4 class="font-semibold text-sky-700">1. Primire Webhook</h4>
-                        <p class="text-sm text-slate-600">Sistem extern trimite CV (text/URL) și metadate.</p>
-                    </div>
-                    <div class="flow-arrow hidden md:flex">➔</div>
-                    <div class="flow-step bg-sky-50 p-4 rounded-lg shadow text-center">
-                        <span class="text-3xl mb-2">🛡️</span>
-                        <h4 class="font-semibold text-sky-700">2. Validare & Idempotență</h4>
-                        <p class="text-sm text-slate-600">Verificare secret webhook și evitare duplicate.</p>
-                    </div>
-                    <div class="flow-arrow hidden md:flex">➔</div>
-                    <div class="flow-step bg-sky-50 p-4 rounded-lg shadow text-center">
-                        <span class="text-3xl mb-2">⚙️</span>
-                        <h4 class="font-semibold text-sky-700">3. Procesare Asincronă</h4>
-                        <p class="text-sm text-slate-600">Răspuns HTTP 202; procesarea continuă în fundal.</p>
-                    </div>
-                </div>
-                
-                <div class="flex justify-center my-2 md:my-4"><span class="flow-arrow transform md:rotate-0 rotate-90">⬇️</span></div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-stretch mb-4">
-                    <div class="flow-step bg-teal-50 p-4 rounded-lg shadow text-center">
-                        <span class="text-3xl mb-2">📄</span>
-                        <h4 class="font-semibold text-teal-700">4. Descărcare & Parsare (URL)</h4>
-                        <p class="text-sm text-slate-600">Descărcare asincronă și extragere text din PDF/DOCX.</p>
-                    </div>
-                    <div class="flow-arrow hidden md:flex">➔</div>
-                    <div class="flow-step bg-teal-50 p-4 rounded-lg shadow text-center">
-                        <span class="text-3xl mb-2">🧠</span>
-                        <h4 class="font-semibold text-teal-700">5. Extragere Date (Gemini)</h4>
-                        <p class="text-sm text-slate-600">Modelul AI extrage informații structurate conform schemei.</p>
-                    </div>
-                    <div class="flow-arrow hidden md:flex">➔</div>
-                    <div class="flow-step bg-teal-50 p-4 rounded-lg shadow text-center">
-                        <span class="text-3xl mb-2">💾</span>
-                        <h4 class="font-semibold text-teal-700">6. Persistență (Firestore)</h4>
-                        <p class="text-sm text-slate-600">Salvare date inițiale, status, și date extrase.</p>
-                    </div>
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8 mt-6">
+        <section id="overview" class="content-section bg-white p-6 sm:p-8 rounded-lg shadow-xl">
+            <h2 class="section-title">Prezentare Generală a Sistemului</h2>
+            <div class="text-content">
+                <p>
+                    Această aplicație interactivă vă ghidează prin specificațiile tehnice, configurarea și utilizarea sistemului nostru avansat de procesare automată a CV-urilor. Sistemul este conceput ca o soluție robustă și scalabilă, menită să eficientizeze extragerea informațiilor structurate din CV-uri, utilizând cele mai noi tehnologii de inteligență artificială.
+                </p>
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-sky-700 mb-3">Arhitectura Sistemului și Tehnologii Cheie</h3>
+                    <p class="mb-3">Sistemul este construit ca o aplicație web FastAPI, containerizată cu Docker și optimizată pentru implementare pe platforme serverless precum Google Cloud Run.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong class="font-medium">API Backend:</strong> Dezvoltat în Python folosind framework-ul FastAPI.</li>
+                        <li><strong class="font-medium">Inteligență Artificială Generativă:</strong> Utilizează modelul `gemini-2.5-flash-preview-05-20` de la Google, accesat prin SDK-ul `google-genai`.</li>
+                        <li><strong class="font-medium">Bază de Date NoSQL:</strong> Google Cloud Firestore în modul Nativ.</li>
+                        <li><strong class="font-medium">Platformă de Rulare (Recomandată):</strong> Google Cloud Run.</li>
+                        <li><strong class="font-medium">Containerizare:</strong> Docker.</li>
+                    </ul>
                 </div>
 
-                <div class="flex justify-center my-2 md:my-4"><span class="flow-arrow transform md:rotate-0 rotate-90">⬇️</span></div>
-                
-                <div class="flow-step bg-indigo-50 p-4 rounded-lg shadow text-center max-w-md mx-auto">
-                    <span class="text-3xl mb-2">📊</span>
-                    <h4 class="font-semibold text-indigo-700">7. Verificare Status (Opțional)</h4>
-                    <p class="text-sm text-slate-600">Clientul poate interoga un endpoint pentru a vedea starea procesării.</p>
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-700 mb-4">Fluxul de Date (End-to-End)</h3>
+                    <p class="mb-6">Următoarea diagramă ilustrează pașii principali în procesarea unui CV, de la primirea acestuia până la stocarea datelor extrase.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-stretch mb-4">
+                        <div class="flow-step bg-sky-50 p-4 rounded-lg shadow text-center">
+                            <span class="text-3xl mb-2">📥</span>
+                            <h4 class="font-semibold text-sky-700 text-base">1. Primire Webhook</h4>
+                            <p class="text-xs text-slate-600">Sistem extern trimite CV (text/URL) și metadate.</p>
+                        </div>
+                        <div class="flow-arrow hidden md:flex">➔</div>
+                        <div class="flow-step bg-sky-50 p-4 rounded-lg shadow text-center">
+                            <span class="text-3xl mb-2">🛡️</span>
+                            <h4 class="font-semibold text-sky-700 text-base">2. Validare & Idempotență</h4>
+                            <p class="text-xs text-slate-600">Verificare secret webhook și evitare duplicate.</p>
+                        </div>
+                        <div class="flow-arrow hidden md:flex">➔</div>
+                        <div class="flow-step bg-sky-50 p-4 rounded-lg shadow text-center">
+                            <span class="text-3xl mb-2">⚙️</span>
+                            <h4 class="font-semibold text-sky-700 text-base">3. Procesare Asincronă</h4>
+                            <p class="text-xs text-slate-600">Răspuns HTTP 202; procesarea continuă în fundal.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center my-3 md:my-4"><span class="flow-arrow transform md:rotate-0 rotate-90">⬇️</span></div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-stretch mb-4">
+                        <div class="flow-step bg-teal-50 p-4 rounded-lg shadow text-center">
+                            <span class="text-3xl mb-2">📄</span>
+                            <h4 class="font-semibold text-teal-700 text-base">4. Descărcare & Parsare (URL)</h4>
+                            <p class="text-xs text-slate-600">Descărcare asincronă și extragere text din PDF/DOCX.</p>
+                        </div>
+                        <div class="flow-arrow hidden md:flex">➔</div>
+                        <div class="flow-step bg-teal-50 p-4 rounded-lg shadow text-center">
+                            <span class="text-3xl mb-2">🧠</span>
+                            <h4 class="font-semibold text-teal-700 text-base">5. Extragere Date (Gemini)</h4>
+                            <p class="text-xs text-slate-600">Modelul AI extrage informații structurate conform schemei.</p>
+                        </div>
+                        <div class="flow-arrow hidden md:flex">➔</div>
+                        <div class="flow-step bg-teal-50 p-4 rounded-lg shadow text-center">
+                            <span class="text-3xl mb-2">💾</span>
+                            <h4 class="font-semibold text-teal-700 text-base">6. Persistență (Firestore)</h4>
+                            <p class="text-xs text-slate-600">Salvare date inițiale, status, și date extrase.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center my-3 md:my-4"><span class="flow-arrow transform md:rotate-0 rotate-90">⬇️</span></div>
+                    
+                    <div class="flow-step bg-indigo-50 p-4 rounded-lg shadow text-center max-w-md mx-auto">
+                        <span class="text-3xl mb-2">📊</span>
+                        <h4 class="font-semibold text-indigo-700 text-base">7. Verificare Status (Opțional)</h4>
+                        <p class="text-xs text-slate-600">Clientul poate interoga un endpoint pentru a vedea starea procesării.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="features" class="content-section bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold text-sky-700 mb-4">Funcționalități Detaliate</h2>
-            <p class="mb-6 text-slate-700 leading-relaxed">
-                Sistemul nostru include o serie de funcționalități avansate pentru a asigura o procesare eficientă, sigură și fiabilă a CV-urilor. Fiecare componentă a fost proiectată cu atenție la detalii pentru a oferi o experiență optimă. Click pe fiecare titlu pentru a expanda detaliile.
-            </p>
+        <section id="features" class="content-section bg-white p-6 sm:p-8 rounded-lg shadow-xl">
+            <h2 class="section-title">Funcționalități Detaliate</h2>
+            <div class="text-content">
+                <p class="mb-8">
+                    Sistemul nostru include o serie de funcționalități avansate pentru a asigura o procesare eficientă, sigură și fiabilă a CV-urilor. Fiecare componentă a fost proiectată cu atenție la detalii pentru a oferi o experiență optimă. Click pe fiecare titlu pentru a expanda detaliile.
+                </p>
+            </div>
             <div class="space-y-6">
                 <div>
                     <h3 class="text-xl font-semibold text-sky-600 mb-2 expand-button cursor-pointer" onclick="toggleDetails(this, 'feature-webhook')">Endpoint Webhook (`/webhook/cv`)</h3>
-                    <div id="feature-webhook" class="schema-details ml-0 pl-0 border-l-0">
-                        <p class="text-slate-700 mb-1"><strong class="text-slate-800">Metodă HTTP:</strong> POST</p>
-                        <p class="text-slate-700 mb-1"><strong class="text-slate-800">Securizare:</strong> Validare prin header `X-Webhook-Secret`.</p>
-                        <p class="text-slate-700 mb-1"><strong class="text-slate-800">Payload Intrare:</strong> CV (text/URL), `source_candidate_id`, `idempotency_key`, `metadata`.</p>
-                        <p class="text-slate-700 mb-1"><strong class="text-slate-800">Răspuns:</strong> HTTP 202 Accepted, `processing_id`, `status`, `status_url`.</p>
-                        <p class="text-slate-700">Comportament: Validează, verifică idempotența, inițiază procesare asincronă.</p>
+                    <div id="feature-webhook" class="schema-details ml-0 pl-0 border-l-0 text-content">
+                        <p><strong class="font-medium">Metodă HTTP:</strong> POST</p>
+                        <p><strong class="font-medium">Securizare:</strong> Validare prin header `X-Webhook-Secret`.</p>
+                        <p><strong class="font-medium">Payload Intrare:</strong> CV (text/URL), `source_candidate_id`, `idempotency_key`, `metadata`.</p>
+                        <p><strong class="font-medium">Răspuns:</strong> HTTP 202 Accepted, `processing_id`, `status`, `status_url`.</p>
+                        <p>Comportament: Validează, verifică idempotența, inițiază procesare asincronă.</p>
                     </div>
                 </div>
                 <div>
                     <h3 class="text-xl font-semibold text-sky-600 mb-2 expand-button cursor-pointer" onclick="toggleDetails(this, 'feature-url-processing')">Procesarea Fișierelor CV de la URL</h3>
-                     <div id="feature-url-processing" class="schema-details ml-0 pl-0 border-l-0">
-                        <p class="text-slate-700 mb-1"><strong class="text-slate-800">Biblioteci:</strong> `aiohttp`, `PyPDF2`, `python-docx`.</p>
-                        <p class="text-slate-700 mb-1">Descărcare asincronă, User-Agent generic, detecție MIME.</p>
-                        <p class="text-slate-700">Gestionare robustă a erorilor de rețea și parsare.</p>
+                     <div id="feature-url-processing" class="schema-details ml-0 pl-0 border-l-0 text-content">
+                        <p><strong class="font-medium">Biblioteci:</strong> `aiohttp`, `PyPDF2`, `python-docx`.</p>
+                        <p>Descărcare asincronă, User-Agent generic, detecție MIME.</p>
+                        <p>Gestionare robustă a erorilor de rețea și parsare.</p>
                     </div>
                 </div>
                  <div>
                     <h3 class="text-xl font-semibold text-sky-600 mb-2 expand-button cursor-pointer" onclick="toggleDetails(this, 'feature-gemini')">Integrarea cu API-ul Gemini</h3>
-                     <div id="feature-gemini" class="schema-details ml-0 pl-0 border-l-0">
-                        <p class="text-slate-700 mb-1"><strong class="text-slate-800">SDK:</strong> `google-genai`.</p>
-                        <p class="text-slate-700 mb-1"><strong class="text-slate-800">Model:</strong> `gemini-2.5-flash-preview-05-20`.</p>
-                        <p class="text-slate-700 mb-1"><strong class="text-slate-800">Configurație:</strong> `response_mime_type: "application/json"`, `response_schema`, `temperature: 0.1`, `safety_settings: BLOCK_NONE`, `thinking_config: thinking_budget=0`.</p>
-                        <p class="text-slate-700 mb-1">Prompt în engleză, apel asincron, reîncercări automate.</p>
+                     <div id="feature-gemini" class="schema-details ml-0 pl-0 border-l-0 text-content">
+                        <p><strong class="font-medium">SDK:</strong> `google-genai`.</p>
+                        <p><strong class="font-medium">Model:</strong> `gemini-2.5-flash-preview-05-20`.</p>
+                        <p><strong class="font-medium">Configurație:</strong> `response_mime_type: "application/json"`, `response_schema`, `temperature: 0.1`, `safety_settings: BLOCK_NONE`, `thinking_config: thinking_budget=0`.</p>
+                        <p>Prompt în engleză, apel asincron, reîncercări automate.</p>
                     </div>
                 </div>
                 <div>
                     <h3 class="text-xl font-semibold text-sky-600 mb-2 expand-button cursor-pointer" onclick="toggleDetails(this, 'feature-firestore')">Persistența Datelor în Firestore</h3>
-                     <div id="feature-firestore" class="schema-details ml-0 pl-0 border-l-0">
-                        <p class="text-slate-700 mb-1"><strong class="text-slate-800">SDK:</strong> `firebase-admin`.</p>
-                        <p class="text-slate-700 mb-1"><strong class="text-slate-800">Structura Colecției:</strong> `artifacts/{APP_ID}/users/cv_processing_service_user/processed_cvs`.</p>
-                        <p class="text-slate-700 mb-1">Stochează: `processing_id`, payload, status, date extrase, erori, timestamps, etc.</p>
+                     <div id="feature-firestore" class="schema-details ml-0 pl-0 border-l-0 text-content">
+                        <p><strong class="font-medium">SDK:</strong> `firebase-admin`.</p>
+                        <p><strong class="font-medium">Structura Colecției:</strong> `artifacts/{APP_ID}/users/cv_processing_service_user/processed_cvs`.</p>
+                        <p>Stochează: `processing_id`, payload, status, date extrase, erori, timestamps, etc.</p>
                     </div>
                 </div>
                  <div>
                     <h3 class="text-xl font-semibold text-sky-600 mb-2 expand-button cursor-pointer" onclick="toggleDetails(this, 'feature-status')">Endpoint de Status</h3>
-                     <div id="feature-status" class="schema-details ml-0 pl-0 border-l-0">
-                        <p class="text-slate-700 mb-1"><strong class="text-slate-800">Metodă HTTP:</strong> GET, `/status/cv/{processing_id}`.</p>
-                        <p class="text-slate-700">Returnează starea curentă și rezultatele unei procesări.</p>
+                     <div id="feature-status" class="schema-details ml-0 pl-0 border-l-0 text-content">
+                        <p><strong class="font-medium">Metodă HTTP:</strong> GET, `/status/cv/{processing_id}`.</p>
+                        <p>Returnează starea curentă și rezultatele unei procesări.</p>
                     </div>
                 </div>
                 <div>
                     <h3 class="text-xl font-semibold text-sky-600 mb-2 expand-button cursor-pointer" onclick="toggleDetails(this, 'feature-idempotency')">Gestionarea Idempotenței</h3>
-                     <div id="feature-idempotency" class="schema-details ml-0 pl-0 border-l-0">
-                        <p class="text-slate-700">Previne procesările duplicate bazate pe `idempotency_key` sau `source_candidate_id`.</p>
+                     <div id="feature-idempotency" class="schema-details ml-0 pl-0 border-l-0 text-content">
+                        <p>Previne procesările duplicate bazate pe `idempotency_key` sau `source_candidate_id`.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="schema" class="content-section bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold text-sky-700 mb-4">Schema de Extracție a Datelor (`CV_EXTRACTION_SCHEMA`)</h2>
-            <p class="mb-6 text-slate-700 leading-relaxed">
-                Aceasta este structura JSON detaliată pe care modelul Gemini o utilizează pentru a extrage și organiza informațiile din CV-uri. Puteți da click pe fiecare cheie principală pentru a vedea sub-proprietățile și descrierile acestora. Câmpurile marcate cu "(obligatoriu)" în descrierea schemei din codul sursă sunt esențiale pentru structura de bază a datelor extrase.
-            </p>
+        <section id="schema" class="content-section bg-white p-6 sm:p-8 rounded-lg shadow-xl">
+            <h2 class="section-title">Schema de Extracție a Datelor (`CV_EXTRACTION_SCHEMA`)</h2>
+            <div class="text-content">
+                <p class="mb-8">
+                    Aceasta este structura JSON detaliată pe care modelul Gemini o utilizează pentru a extrage și organiza informațiile din CV-uri. Puteți da click pe fiecare cheie principală pentru a vedea sub-proprietățile și descrierile acestora. Câmpurile marcate cu "(obligatoriu)" în descrierea schemei din codul sursă sunt esențiale pentru structura de bază a datelor extrase.
+                </p>
+            </div>
             <div id="cvSchemaContainer" class="space-y-3">
                 </div>
         </section>
 
-        <section id="tech" class="content-section bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold text-sky-700 mb-4">Tehnologii Utilizate</h2>
-            <p class="mb-6 text-slate-700 leading-relaxed">
-                Sistemul se bazează pe un set de tehnologii moderne și performante pentru a asigura eficiență și fiabilitate.
-            </p>
+        <section id="tech" class="content-section bg-white p-6 sm:p-8 rounded-lg shadow-xl">
+            <h2 class="section-title">Tehnologii Utilizate</h2>
+            <div class="text-content">
+                <p class="mb-8">
+                    Sistemul se bazează pe un set de tehnologii moderne și performante pentru a asigura eficiență și fiabilitate.
+                </p>
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-slate-50 p-4 rounded-lg shadow hover:shadow-md transition-shadow">
-                    <h3 class="text-lg font-semibold text-sky-700">Python & FastAPI</h3>
+                <div class="bg-slate-50 p-5 rounded-lg shadow hover:shadow-lg transition-shadow">
+                    <h3 class="text-lg font-semibold text-sky-700 mb-1">Python & FastAPI</h3>
                     <p class="text-sm text-slate-600">Pentru dezvoltarea rapidă și performantă a API-ului backend.</p>
                 </div>
-                <div class="bg-slate-50 p-4 rounded-lg shadow hover:shadow-md transition-shadow">
-                    <h3 class="text-lg font-semibold text-sky-700">Google Gemini 2.5 Flash</h3>
+                <div class="bg-slate-50 p-5 rounded-lg shadow hover:shadow-lg transition-shadow">
+                    <h3 class="text-lg font-semibold text-sky-700 mb-1">Google Gemini 2.5 Flash</h3>
                     <p class="text-sm text-slate-600">Model AI de ultimă generație pentru extragerea inteligentă a datelor (via SDK `google-genai`).</p>
                 </div>
-                <div class="bg-slate-50 p-4 rounded-lg shadow hover:shadow-md transition-shadow">
-                    <h3 class="text-lg font-semibold text-sky-700">Google Cloud Firestore</h3>
+                <div class="bg-slate-50 p-5 rounded-lg shadow hover:shadow-lg transition-shadow">
+                    <h3 class="text-lg font-semibold text-sky-700 mb-1">Google Cloud Firestore</h3>
                     <p class="text-sm text-slate-600">Bază de date NoSQL scalabilă pentru stocarea datelor.</p>
                 </div>
-                <div class="bg-slate-50 p-4 rounded-lg shadow hover:shadow-md transition-shadow">
-                    <h3 class="text-lg font-semibold text-sky-700">Google Cloud Run</h3>
+                <div class="bg-slate-50 p-5 rounded-lg shadow hover:shadow-lg transition-shadow">
+                    <h3 class="text-lg font-semibold text-sky-700 mb-1">Google Cloud Run</h3>
                     <p class="text-sm text-slate-600">Platformă serverless pentru implementare și scalare automată.</p>
                 </div>
-                <div class="bg-slate-50 p-4 rounded-lg shadow hover:shadow-md transition-shadow">
-                    <h3 class="text-lg font-semibold text-sky-700">Docker</h3>
+                <div class="bg-slate-50 p-5 rounded-lg shadow hover:shadow-lg transition-shadow">
+                    <h3 class="text-lg font-semibold text-sky-700 mb-1">Docker</h3>
                     <p class="text-sm text-slate-600">Pentru containerizarea aplicației, asigurând portabilitate.</p>
                 </div>
-                <div class="bg-slate-50 p-4 rounded-lg shadow hover:shadow-md transition-shadow">
-                    <h3 class="text-lg font-semibold text-sky-700">aiohttp, PyPDF2, python-docx</h3>
+                <div class="bg-slate-50 p-5 rounded-lg shadow hover:shadow-lg transition-shadow">
+                    <h3 class="text-lg font-semibold text-sky-700 mb-1">aiohttp, PyPDF2, python-docx</h3>
                     <p class="text-sm text-slate-600">Pentru procesarea asincronă a fișierelor și extragerea textului.</p>
                 </div>
-                 <div class="bg-slate-50 p-4 rounded-lg shadow hover:shadow-md transition-shadow">
-                    <h3 class="text-lg font-semibold text-sky-700">Pydantic</h3>
+                 <div class="bg-slate-50 p-5 rounded-lg shadow hover:shadow-lg transition-shadow">
+                    <h3 class="text-lg font-semibold text-sky-700 mb-1">Pydantic</h3>
                     <p class="text-sm text-slate-600">Pentru validarea datelor și definirea modelelor.</p>
                 </div>
-                 <div class="bg-slate-50 p-4 rounded-lg shadow hover:shadow-md transition-shadow">
-                    <h3 class="text-lg font-semibold text-sky-700">Tenacity</h3>
+                 <div class="bg-slate-50 p-5 rounded-lg shadow hover:shadow-lg transition-shadow">
+                    <h3 class="text-lg font-semibold text-sky-700 mb-1">Tenacity</h3>
                     <p class="text-sm text-slate-600">Pentru implementarea logicii de reîncercare robustă.</p>
                 </div>
             </div>
         </section>
 
-        <section id="setup" class="content-section bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold text-sky-700 mb-6">Ghid de Configurare a Sistemului (Setup)</h2>
-            <p class="mb-6 text-slate-700 leading-relaxed">
-                Urmați acești pași pentru a configura și rula local sistemul de procesare a CV-urilor. Acest ghid presupune că aveți deja cunoștințe de bază despre Python, terminal și Google Cloud Platform.
-            </p>
-
-            <div>
-                <h3 class="step-title"><span class="step-counter">1</span>Cerințe Preliminare</h3>
-                <ul class="list-disc list-inside space-y-2 text-slate-700 mb-6 ml-10">
-                    <li>**Python 3.10+** instalat pe sistemul dumneavoastră.</li>
-                    <li>**Pip** (managerul de pachete Python) actualizat.</li>
-                    <li>**(Opțional, dar recomandat pentru implementare) Docker** instalat.</li>
-                    <li>Un **cont Google Cloud Platform (GCP)** activ, cu facturarea configurată.</li>
-                    <li>**(Recomandat) Google Cloud SDK (`gcloud` CLI)** instalat și configurat pe mașina locală.</li>
-                </ul>
+        <section id="setup" class="content-section bg-white p-6 sm:p-8 rounded-lg shadow-xl">
+            <h2 class="section-title">Ghid de Configurare a Sistemului (Setup)</h2>
+            <div class="text-content">
+                <p class="mb-8">
+                    Urmați acești pași pentru a configura și rula local sistemul de procesare a CV-urilor. Acest ghid presupune că aveți deja cunoștințe de bază despre Python, terminal și Google Cloud Platform.
+                </p>
             </div>
 
-            <div>
-                <h3 class="step-title"><span class="step-counter">2</span>Obținerea Codului Sursă</h3>
-                <p class="text-slate-700 mb-2 ml-10">Descărcați sau clonați fișierele proiectului (`main.py`, `requirements.txt`, `Dockerfile`, etc.) într-un director local.</p>
-            </div>
-
-            <div>
-                <h3 class="step-title"><span class="step-counter">3</span>Mediu Virtual și Dependențe</h3>
-                <p class="text-slate-700 mb-2 ml-10">Este recomandat să folosiți un mediu virtual Python pentru a izola dependențele proiectului.</p>
-                <h4 class="sub-step-title ml-10">3.1. Creați și Activați Mediul Virtual:</h4>
-                <p class="text-slate-700 mb-2 ml-10">Navigați în directorul proiectului și rulați:</p>
-                <div class="code-block ml-10">
-                    <span class="block">python -m venv venv</span>
-                    <span class="block"># Pe Windows:</span>
-                    <span class="block">venv\Scripts\activate</span>
-                    <span class="block"># Pe macOS/Linux:</span>
-                    <span class="block">source venv/bin/activate</span>
+            <div class="space-y-8">
+                <div>
+                    <h3 class="step-title"><span class="step-counter">1</span>Cerințe Preliminare</h3>
+                    <ul class="list-disc list-inside space-y-2 text-slate-700 ml-10">
+                        <li>**Python 3.10+** instalat pe sistemul dumneavoastră.</li>
+                        <li>**Pip** (managerul de pachete Python) actualizat.</li>
+                        <li>**(Opțional, dar recomandat pentru implementare) Docker** instalat.</li>
+                        <li>Un **cont Google Cloud Platform (GCP)** activ, cu facturarea configurată.</li>
+                        <li>**(Recomandat) Google Cloud SDK (`gcloud` CLI)** instalat și configurat pe mașina locală.</li>
+                    </ul>
                 </div>
-                <h4 class="sub-step-title ml-10">3.2. Instalați Dependențele:</h4>
-                <p class="text-slate-700 mb-2 ml-10">Cu mediul virtual activat, instalați pachetele necesare:</p>
-                <div class="code-block ml-10">pip install -r requirements.txt</div>
-            </div>
 
-            <div>
-                <h3 class="step-title"><span class="step-counter">4</span>Configurarea Proiectului Google Cloud</h3>
-                 <h4 class="sub-step-title ml-10">4.1. Creați sau Selectați un Proiect GCP:</h4>
-                 <p class="text-slate-700 mb-2 ml-10">Accesați <a href="https://console.cloud.google.com/" target="_blank" class="text-sky-600 hover:underline">Google Cloud Console</a> și selectați un proiect existent sau creați unul nou. Notați **ID-ul Proiectului (Project ID)**.</p>
-                 <h4 class="sub-step-title ml-10">4.2. Activați API-urile Necesare:</h4>
-                 <p class="text-slate-700 mb-2 ml-10">Pentru proiectul selectat, asigurați-vă că următoarele API-uri sunt activate:</p>
-                 <ul class="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-14">
-                    <li>**Cloud Firestore API:** Pentru baza de date.</li>
-                    <li>**Vertex AI API:** Pentru accesul la modelele Gemini. (Nota: Gemini API poate fi listat și sub "Generative Language API" sau similar, în funcție de interfața consolei).</li>
-                 </ul>
-                 <p class="text-slate-700 mb-2 ml-10">Puteți activa API-urile din secțiunea "APIs & Services" > "Library" a consolei GCP.</p>
-            </div>
-
-            <div>
-                <h3 class="step-title"><span class="step-counter">5</span>Configurarea Firestore</h3>
-                <p class="text-slate-700 mb-2 ml-10">Dacă nu ați făcut-o deja la activarea API-ului:</p>
-                <ul class="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-14">
-                    <li>Navigați la secțiunea Firestore din consola GCP.</li>
-                    <li>Creați o bază de date în **Mod Nativ (Native Mode)**.</li>
-                    <li>Alegeți o **locație** pentru baza de date (ex: `europe-west1` sau `eur5`). Această alegere este permanentă.</li>
-                </ul>
-            </div>
-            
-            <div>
-                <h3 class="step-title"><span class="step-counter">6</span>Cont de Serviciu și Cheie JSON (pentru Dezvoltare Locală)</h3>
-                <p class="text-slate-700 mb-2 ml-10">Pentru ca aplicația să se autentifice la GCP de pe mașina locală, veți avea nevoie de o cheie de cont de serviciu.</p>
-                 <ul class="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-14">
-                    <li>În consola GCP, navigați la "IAM & Admin" > "Service Accounts".</li>
-                    <li>Click pe "+ CREATE SERVICE ACCOUNT".</li>
-                    <li>Dați un nume contului (ex: `cv-processor-dev-sa`).</li>
-                    <li>Acordați următoarele roluri contului de serviciu:
-                        <ul class="list-circle list-inside ml-6">
-                            <li>`Cloud Datastore User` (oferă acces la Firestore în Mod Nativ)</li>
-                            <li>`Vertex AI User` (oferă acces la modelele Gemini și alte resurse Vertex AI)</li>
-                        </ul>
-                    </li>
-                    <li>Finalizați crearea contului de serviciu.</li>
-                    <li>Selectați contul nou creat, mergeți la tab-ul "KEYS", click pe "ADD KEY" > "Create new key".</li>
-                    <li>Alegeți tipul **JSON** și click pe "CREATE". Un fișier JSON va fi descărcat.</li>
-                    <li>Păstrați acest fișier JSON într-un loc sigur.</li>
-                </ul>
-                <p class="text-slate-700 mb-2 ml-10">**Alternativă (ADC):** Dacă aveți `gcloud` CLI instalat, rulați `gcloud auth application-default login` și autentificați-vă. Acest lucru configurează Application Default Credentials (ADC), iar aplicația le poate folosi automat dacă variabila `GOOGLE_APPLICATION_CREDENTIALS` nu este setată.</p>
-            </div>
-
-            <div>
-                <h3 class="step-title"><span class="step-counter">7</span>Cheia API Gemini</h3>
-                <p class="text-slate-700 mb-2 ml-10">Obțineți o cheie API pentru a utiliza modelele Gemini.</p>
-                 <ul class="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-14">
-                    <li>Mergeți la <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-sky-600 hover:underline">Google AI Studio</a>.</li>
-                    <li>Conectați-vă cu contul Google și creați o nouă cheie API dacă nu aveți deja una pentru proiectul GCP selectat.</li>
-                 </ul>
-            </div>
-
-            <div>
-                <h3 class="step-title"><span class="step-counter">8</span>Configurarea Variabilelor de Mediu (`.env`)</h3>
-                <p class="text-slate-700 mb-2 ml-10">Creați un fișier numit `.env` în directorul rădăcină al proiectului (lângă `main.py`) și adăugați următoarele variabile, înlocuind valorile placeholder:</p>
-                <div class="code-block ml-10">
-                    <span class="block">GEMINI_API_KEY="CHEIA_DVS_API_GEMINI_AICI"</span>
-                    <span class="block">WEBHOOK_SECRET="UN_SECRET_PUTERNIC_PENTRU_WEBHOOK"</span>
-                    <span class="block">GCP_PROJECT_ID="ID_UL_PROIECTULUI_DVS_GCP"</span>
-                    <span class="block"># Decomentați și completați linia de mai jos DOAR dacă NU folosiți ADC</span>
-                    <span class="block"># GOOGLE_APPLICATION_CREDENTIALS="/calea/completa/catre/fisierul_serviciu_cont.json"</span>
+                <div>
+                    <h3 class="step-title"><span class="step-counter">2</span>Obținerea Codului Sursă</h3>
+                    <p class="text-slate-700 ml-10">Descărcați sau clonați fișierele proiectului (`main.py`, `requirements.txt`, `Dockerfile`, etc.) într-un director local.</p>
                 </div>
-                 <p class="text-slate-700 mt-2 ml-10">**Notă:** SDK-ul `google-genai` va căuta implicit variabila de mediu `GOOGLE_API_KEY`. Scriptul `main.py` este configurat să folosească valoarea din `GEMINI_API_KEY` pentru `GOOGLE_API_KEY` dacă aceasta din urmă nu este setată direct.</p>
-            </div>
+
+                <div>
+                    <h3 class="step-title"><span class="step-counter">3</span>Mediu Virtual și Dependențe</h3>
+                    <p class="text-slate-700 ml-10">Este recomandat să folosiți un mediu virtual Python pentru a izola dependențele proiectului.</p>
+                    <h4 class="sub-step-title ml-10">3.1. Creați și Activați Mediul Virtual:</h4>
+                    <p class="text-slate-700 ml-10">Navigați în directorul proiectului și rulați:</p>
+                    <div class="code-block ml-10">
+                        <span class="block">python -m venv venv</span>
+                        <span class="block"># Pe Windows:</span>
+                        <span class="block">venv\Scripts\activate</span>
+                        <span class="block"># Pe macOS/Linux:</span>
+                        <span class="block">source venv/bin/activate</span>
+                    </div>
+                    <h4 class="sub-step-title ml-10">3.2. Instalați Dependențele:</h4>
+                    <p class="text-slate-700 ml-10">Cu mediul virtual activat, instalați pachetele necesare:</p>
+                    <div class="code-block ml-10">pip install -r requirements.txt</div>
+                </div>
+
+                <div>
+                    <h3 class="step-title"><span class="step-counter">4</span>Configurarea Proiectului Google Cloud</h3>
+                     <h4 class="sub-step-title ml-10">4.1. Creați sau Selectați un Proiect GCP:</h4>
+                     <p class="text-slate-700 ml-10">Accesați <a href="https://console.cloud.google.com/" target="_blank" class="text-sky-600 hover:underline">Google Cloud Console</a> și selectați un proiect existent sau creați unul nou. Notați **ID-ul Proiectului (Project ID)**.</p>
+                     <h4 class="sub-step-title ml-10">4.2. Activați API-urile Necesare:</h4>
+                     <p class="text-slate-700 ml-10">Pentru proiectul selectat, asigurați-vă că următoarele API-uri sunt activate:</p>
+                     <ul class="list-disc list-inside space-y-1 text-slate-700 ml-14">
+                        <li>**Cloud Firestore API:** Pentru baza de date.</li>
+                        <li>**Vertex AI API:** Pentru accesul la modelele Gemini.</li>
+                     </ul>
+                     <p class="text-slate-700 ml-10">Puteți activa API-urile din secțiunea "APIs & Services" > "Library" a consolei GCP.</p>
+                </div>
+
+                <div>
+                    <h3 class="step-title"><span class="step-counter">5</span>Configurarea Firestore</h3>
+                    <p class="text-slate-700 ml-10">Dacă nu ați făcut-o deja la activarea API-ului:</p>
+                    <ul class="list-disc list-inside space-y-1 text-slate-700 ml-14">
+                        <li>Navigați la secțiunea Firestore din consola GCP.</li>
+                        <li>Creați o bază de date în **Mod Nativ (Native Mode)**.</li>
+                        <li>Alegeți o **locație** pentru baza de date (ex: `europe-west1`).</li>
+                    </ul>
+                </div>
             
-            <div>
-                <h3 class="step-title"><span class="step-counter">9</span>Pornirea Locală a Serverului</h3>
-                <p class="text-slate-700 mb-2 ml-10">Cu mediul virtual activat și fișierul `.env` configurat, porniți serverul FastAPI:</p>
-                <div class="code-block ml-10">python main.py</div>
-                <p class="text-slate-700 mt-2 ml-10">Serverul ar trebui să ruleze pe `http://localhost:8000`. Verificați logurile din terminal pentru a confirma inițializarea corectă a serviciilor (Firestore, Gemini).</p>
+                <div>
+                    <h3 class="step-title"><span class="step-counter">6</span>Cont de Serviciu și Cheie JSON (Dezvoltare Locală)</h3>
+                    <p class="text-slate-700 ml-10">Pentru ca aplicația să se autentifice la GCP de pe mașina locală:</p>
+                     <ul class="list-disc list-inside space-y-1 text-slate-700 ml-14">
+                        <li>În consola GCP, "IAM & Admin" > "Service Accounts", creați un cont (ex: `cv-processor-dev-sa`).</li>
+                        <li>Acordați rolurile: `Cloud Datastore User` și `Vertex AI User`.</li>
+                        <li>Generați o cheie JSON pentru acest cont și descărcați-o.</li>
+                    </ul>
+                    <p class="text-slate-700 ml-10">**Alternativă (ADC):** Rulați `gcloud auth application-default login`.</p>
+                </div>
+
+                <div>
+                    <h3 class="step-title"><span class="step-counter">7</span>Cheia API Gemini</h3>
+                    <p class="text-slate-700 ml-10">Obțineți o cheie API din <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-sky-600 hover:underline">Google AI Studio</a> pentru proiectul GCP.</p>
+                </div>
+
+                <div>
+                    <h3 class="step-title"><span class="step-counter">8</span>Configurarea Variabilelor de Mediu (`.env`)</h3>
+                    <p class="text-slate-700 ml-10">Creați fișierul `.env` în rădăcina proiectului:</p>
+                    <div class="code-block ml-10">
+                        <span class="block">GEMINI_API_KEY="CHEIA_DVS_API_GEMINI_AICI"</span>
+                        <span class="block">WEBHOOK_SECRET="UN_SECRET_PUTERNIC_PENTRU_WEBHOOK"</span>
+                        <span class="block">GCP_PROJECT_ID="ID_UL_PROIECTULUI_DVS_GCP"</span>
+                        <span class="block"># GOOGLE_APPLICATION_CREDENTIALS="/calea/catre/fisierul_serviciu_cont.json" # (dacă nu folosiți ADC)</span>
+                    </div>
+                </div>
+            
+                <div>
+                    <h3 class="step-title"><span class="step-counter">9</span>Pornirea Locală a Serverului</h3>
+                    <p class="text-slate-700 ml-10">Porniți serverul FastAPI:</p>
+                    <div class="code-block ml-10">python main.py</div>
+                    <p class="text-slate-700 ml-10">Serverul va rula pe `http://localhost:8000`.</p>
+                </div>
             </div>
         </section>
 
-        <section id="usage" class="content-section bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold text-sky-700 mb-6">Ghid de Utilizare a Sistemului</h2>
-            <p class="mb-6 text-slate-700 leading-relaxed">
-                Odată ce sistemul backend este configurat și rulează, puteți interacționa cu el prin API-ul expus.
-            </p>
+        <section id="usage" class="content-section bg-white p-6 sm:p-8 rounded-lg shadow-xl">
+            <h2 class="section-title">Ghid de Utilizare a Sistemului</h2>
+            <div class="text-content">
+                <p class="mb-8">
+                    Odată ce sistemul backend este configurat și rulează, puteți interacționa cu el prin API-ul expus.
+                </p>
+            </div>
+            <div class="space-y-8">
+                <div>
+                    <h3 class="step-title"><span class="step-counter">1</span>Endpoint Webhook: Procesare CV (`POST /webhook/cv`)</h3>
+                    <div class="text-content ml-10">
+                        <p>Acesta este endpoint-ul principal pentru a trimite CV-uri spre procesare.</p>
+                    </div>
+                    <h4 class="sub-step-title ml-10">Securitate:</h4>
+                    <p class="text-slate-700 ml-14">Header HTTP: `X-Webhook-Secret` cu valoarea din `.env`.</p>
 
-            <div>
-                <h3 class="step-title"><span class="step-counter">1</span>Endpoint Webhook: Procesare CV (`POST /webhook/cv`)</h3>
-                <p class="text-slate-700 mb-2 ml-10">Acesta este endpoint-ul principal pentru a trimite CV-uri spre procesare.</p>
-                
-                <h4 class="sub-step-title ml-10">Securitate:</h4>
-                <p class="text-slate-700 mb-2 ml-14">Toate cererile către acest endpoint trebuie să includă header-ul HTTP `X-Webhook-Secret` cu valoarea secretului configurată în fișierul `.env`.</p>
-
-                <h4 class="sub-step-title ml-10">Payload-ul Cererii (Request Body - JSON):</h4>
-                <p class="text-slate-700 mb-2 ml-14">Corpul cererii trebuie să fie un obiect JSON cu următoarea structură (bazată pe modelul Pydantic `WebhookPayload`):</p>
-                <div class="code-block ml-14">
+                    <h4 class="sub-step-title ml-10">Payload-ul Cererii (JSON):</h4>
+                    <div class="code-block ml-14">
 {
-  "cv_text": "Opțional: Textul integral al CV-ului...",
+  "cv_text": "Opțional: Textul CV-ului...",
   "cv_file_payload": {
-    "cv_url": "Opțional: URL către fișierul CV (ex: PDF, DOCX)",
-    "file_mime_type": "Opțional: Tipul MIME al fișierului din URL"
+    "cv_url": "Opțional: URL către fișierul CV",
+    "file_mime_type": "Opțional: Tipul MIME"
   },
-  "source_candidate_id": "Opțional: ID-ul candidatului din sistemul sursă",
-  "idempotency_key": "Opțional: Cheie unică pentru idempotență",
-  "metadata": {
-    "cheie_custom": "valoare_custom" 
-  }
+  "source_candidate_id": "Opțional: ID candidat sursă",
+  "idempotency_key": "Opțional: Cheie idempotență",
+  "metadata": {"cheie": "valoare"}
 }
-                </div>
-                <p class="text-slate-700 mt-2 ml-14">**Notă:** Trebuie furnizat fie `cv_text`, fie `cv_file_payload.cv_url`.</p>
+                    </div>
+                    <p class="text-slate-700 ml-14">**Notă:** Furnizați fie `cv_text`, fie `cv_file_payload.cv_url`.</p>
 
-                <h4 class="sub-step-title ml-10">Exemple de Cereri `curl`:</h4>
-                <p class="text-slate-700 mb-2 ml-14">Înlocuiți `YOUR_WEBHOOK_SECRET` cu valoarea reală.</p>
-                <p class="text-slate-700 font-semibold mt-2 ml-14">a) Trimitere CV ca text:</p>
-                <div class="code-block ml-14">
+                    <h4 class="sub-step-title ml-10">Exemple `curl`:</h4>
+                    <p class="text-slate-700 font-semibold ml-14">a) CV ca text:</p>
+                    <div class="code-block ml-14">
+# Înlocuiți YOUR_WEBHOOK_SECRET
 curl -X POST "http://localhost:8000/webhook/cv" \
 -H "Content-Type: application/json" \
 -H "X-Webhook-Secret: YOUR_WEBHOOK_SECRET" \
--d '{
-  "cv_text": "Nume: Ion Popescu...",
-  "source_candidate_id": "text-cand-001",
-  "idempotency_key": "req-text-001"
-}'
-                </div>
-                <p class="text-slate-700 font-semibold mt-2 ml-14">b) Trimitere CV ca URL:</p>
-                <div class="code-block ml-14">
+-d '{"cv_text": "Nume: Ion...", "idempotency_key": "req001"}'
+                    </div>
+                    <p class="text-slate-700 font-semibold mt-2 ml-14">b) CV ca URL:</p>
+                    <div class="code-block ml-14">
+# Înlocuiți YOUR_WEBHOOK_SECRET
 curl -X POST "http://localhost:8000/webhook/cv" \
 -H "Content-Type: application/json" \
 -H "X-Webhook-Secret: YOUR_WEBHOOK_SECRET" \
--d '{
-  "cv_file_payload": {
-    "cv_url": "https://example.com/cale/catre/cv.pdf",
-    "file_mime_type": "application/pdf"
-  },
-  "source_candidate_id": "url-cand-002"
-}'
-                </div>
-                <p class="text-slate-700 mt-2 ml-14">(Pentru CMD Windows, comanda `curl` trebuie să fie pe o singură linie, cu ghilimelele interne escapate: `-d "{...}"` devine `-d \"{...}\"`).</p>
+-d '{"cv_file_payload": {"cv_url": "https://link.catre/cv.pdf"}}'
+                    </div>
 
-                <h4 class="sub-step-title ml-10">Răspuns Așteptat (HTTP 202 Accepted):</h4>
-                <div class="code-block ml-14">
+                    <h4 class="sub-step-title ml-10">Răspuns Așteptat (HTTP 202):</h4>
+                    <div class="code-block ml-14">
 {
-  "message": "CV primit și procesarea a fost inițiată în fundal.",
-  "processing_id": "uuid-generat-automat",
+  "message": "CV primit...",
+  "processing_id": "uuid-generat",
   "status": "pending",
-  "status_url": "http://localhost:8000/status/cv/uuid-generat-automat"
+  "status_url": "http://localhost:8000/status/cv/uuid-generat"
 }
+                    </div>
                 </div>
-                 <p class="text-slate-700 mt-2 ml-14">Dacă se detectează o cerere duplicat (prin `idempotency_key` sau `source_candidate_id`), răspunsul va indica acest lucru, iar statusul va fi `already_received_or_processing`.</p>
-            </div>
 
-            <div>
-                <h3 class="step-title mt-8"><span class="step-counter">2</span>Endpoint de Verificare a Statusului (`GET /status/cv/{processing_id}`)</h3>
-                <p class="text-slate-700 mb-2 ml-10">Folosiți `processing_id`-ul returnat de endpoint-ul webhook pentru a interoga starea procesării.</p>
-                
-                <h4 class="sub-step-title ml-10">Exemplu de Cerere `curl`:</h4>
-                <p class="text-slate-700 mb-2 ml-14">Înlocuiți `ID_PROCESARE_PRIMIT` cu valoarea reală.</p>
-                <div class="code-block ml-14">curl -X GET "http://localhost:8000/status/cv/ID_PROCESARE_PRIMIT"</div>
-
-                <h4 class="sub-step-title ml-10">Răspuns Așteptat (HTTP 200 OK):</h4>
-                <p class="text-slate-700 mb-2 ml-14">Structura răspunsului depinde de starea procesării:</p>
-                <p class="text-slate-700 font-semibold mt-2 ml-14">a) Procesare finalizată cu succes:</p>
-                <div class="code-block ml-14">
+                <div>
+                    <h3 class="step-title"><span class="step-counter">2</span>Endpoint Status (`GET /status/cv/{processing_id}`)</h3>
+                     <div class="text-content ml-10">
+                        <p>Interogați starea procesării folosind `processing_id`.</p>
+                    </div>
+                    <h4 class="sub-step-title ml-10">Exemplu `curl`:</h4>
+                    <div class="code-block ml-14">
+# Înlocuiți ID_PROCESARE
+curl -X GET "http://localhost:8000/status/cv/ID_PROCESARE"
+                    </div>
+                    <h4 class="sub-step-title ml-10">Răspuns Așteptat (HTTP 200):</h4>
+                    <div class="code-block ml-14">
 {
-  "processing_id": "ID_PROCESARE_PRIMIT",
-  "status": "completed",
-  "received_at_utc": "timestamp...",
-  "updated_at_utc": "timestamp...",
-  "extracted_data": { /* Datele extrase conform CV_EXTRACTION_SCHEMA */ },
-  "error_message": null,
-  "processing_time_seconds": 15.7
+  "processing_id": "ID_PROCESARE",
+  "status": "completed", // sau "error", "pending_processing"
+  "extracted_data": { /* datele extrase... */ },
+  // ...alte câmpuri
 }
+                    </div>
                 </div>
-                <p class="text-slate-700 font-semibold mt-2 ml-14">b) Procesare în curs:</p>
-                <div class="code-block ml-14">
-{
-  "processing_id": "ID_PROCESARE_PRIMIT",
-  "status": "pending_processing", // sau "downloading_parsing", etc.
-  "received_at_utc": "timestamp...",
-  "updated_at_utc": "timestamp...",
-  "extracted_data": null,
-  "error_message": null,
-  "processing_time_seconds": null
-}
-                </div>
-                 <p class="text-slate-700 font-semibold mt-2 ml-14">c) Eroare în timpul procesării:</p>
-                <div class="code-block ml-14">
-{
-  "processing_id": "ID_PROCESARE_PRIMIT",
-  "status": "error",
-  "received_at_utc": "timestamp...",
-  "updated_at_utc": "timestamp...",
-  "extracted_data": null,
-  "error_message": "Descrierea erorii...",
-  "processing_time_seconds": 5.2
-}
-                </div>
-                <p class="text-slate-700 mt-2 ml-14">Dacă `processing_id` nu este găsit, se va returna un răspuns HTTP 404 Not Found.</p>
-            </div>
-            
-            <div>
-                <h3 class="step-title mt-8"><span class="step-counter">3</span>Interpretarea Datelor Extrase (`extracted_data`)</h3>
-                <p class="text-slate-700 mb-2 ml-10">Câmpul `extracted_data` din răspunsul de status (când procesarea este `completed`) va conține un obiect JSON structurat conform `CV_EXTRACTION_SCHEMA`. Puteți explora detaliile acestei scheme în tab-ul "Schema de Extracție" din această aplicație.</p>
-            </div>
-
-            <div>
-                <h3 class="step-title mt-8"><span class="step-counter">4</span>Idempotența</h3>
-                <p class="text-slate-700 mb-2 ml-10">Pentru a preveni procesarea accidentală a aceluiași CV de mai multe ori (și costurile asociate), sistemul suportă idempotența:</p>
-                <ul class="list-disc list-inside space-y-1 text-slate-700 mb-4 ml-14">
-                    <li>Furnizați un `idempotency_key` unic în payload-ul webhook-ului. Dacă o cerere cu aceeași cheie este primită din nou, sistemul va returna detaliile procesării inițiale fără a re-procesa CV-ul.</li>
-                    <li>Ca alternativă, dacă `idempotency_key` nu este furnizat, dar `source_candidate_id` este, sistemul va folosi `source_candidate_id` pentru verificarea idempotenței.</li>
-                </ul>
             </div>
         </section>
 
-        <section id="considerations" class="content-section bg-white p-6 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold text-sky-700 mb-4">Considerații Tehnice Suplimentare</h2>
-            <p class="mb-6 text-slate-700 leading-relaxed">
-                Pentru o implementare robustă în producție, sunt luate în considerare următoarele aspecte:
+        <section id="recruitcrm" class="content-section bg-white p-6 sm:p-8 rounded-lg shadow-xl">
+            <h2 class="section-title">Ghid de Integrare cu Recruit CRM</h2>
+            <div class="text-content">
+            <p class="mb-8">
+                Această secțiune descrie pașii conceptuali și considerațiile pentru integrarea sistemului nostru de procesare a CV-urilor cu platforma Recruit CRM. Scopul este de a automatiza fluxul de la primirea unui candidat în Recruit CRM, trimiterea CV-ului său către serviciul nostru pentru analiză, și actualizarea profilului candidatului în Recruit CRM cu datele structurate extrase.
             </p>
-             <div class="space-y-4">
+            </div>
+            <div class="note">
+                <p class="font-semibold">Notă Importantă:</p>
+                <p class="text-sm">Detaliile specifice de configurare (nume de câmpuri, capabilități API, interfața exactă a webhook-urilor) din Recruit CRM pot varia. Consultați întotdeauna documentația oficială Recruit CRM pentru informații precise și actualizate privind API-ul și funcționalitățile de webhook.</p>
+            </div>
+
+            <div class="space-y-8">
+                <div>
+                    <h3 class="step-title"><span class="step-counter">1</span>Trimiterea CV-urilor din Recruit CRM</h3>
+                    <p class="text-slate-700 ml-10">Obiectiv: Când un candidat nou este adăugat sau un CV este actualizat în Recruit CRM, informațiile sunt trimise automat către `/webhook/cv`.</p>
+                    
+                    <h4 class="sub-step-title ml-10">Metoda Recomandată: Webhooks în Recruit CRM</h4>
+                    <ul class="list-disc list-inside space-y-2 text-slate-700 ml-14">
+                        <li>**Verificați Capabilitățile Webhook:** Confirmați în Recruit CRM dacă se pot configura webhooks pentru evenimente ca "Candidat Nou Creat" sau "CV Adăugat/Actualizat".</li>
+                        <li>**Configurarea Webhook-ului:**
+                            <ul class="list-circle list-inside ml-6">
+                                <li>**URL Endpoint:** Adresa publică a serviciului nostru FastAPI.</li>
+                                <li>**Metodă HTTP:** `POST`.</li>
+                                <li>**Format Payload:** Ideal, JSON customizabil. Altfel, un intermediar (Zapier) poate fi necesar.</li>
+                                <li>**Header Securitate:** `X-Webhook-Secret` cu valoarea din `.env`.</li>
+                            </ul>
+                        </li>
+                        <li>**Date de Trimis în Payload (Ideal):**
+                            <ul class="list-circle list-inside ml-6">
+                                <li>ID-ul Candidatului din Recruit CRM (slug) -> `source_candidate_id`.</li>
+                                <li>Textul CV-ului -> `cv_text`.</li>
+                                <li>URL către Fișierul CV -> `cv_file_payload.cv_url` (și `file_mime_type`).</li>
+                                <li>Alte metadate -> `metadata`.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                     <p class="text-slate-700 ml-10">**Alternativă:** Folosirea unui instrument de automatizare (Zapier, Make) dacă webhooks directe sunt limitate.</p>
+                </div>
+
+                <div>
+                    <h3 class="step-title"><span class="step-counter">2</span>Procesarea de către Sistemul Nostru</h3>
+                    <p class="text-slate-700 ml-10">Sistemul nostru procesează CV-ul conform fluxului standard. `processing_id` și `source_candidate_id` sunt cheile pentru legătura ulterioară.</p>
+                </div>
+
+                <div>
+                    <h3 class="step-title"><span class="step-counter">3</span>Actualizarea Candidatului în Recruit CRM</h3>
+                    <p class="text-slate-700 ml-10">Datele extrase sunt trimise înapoi în Recruit CRM prin API-ul lor.</p>
+
+                    <h4 class="sub-step-title ml-10">Utilizarea API-ului Recruit CRM (`POST /v1/candidates/{candidate_slug}`):</h4>
+                     <ul class="list-disc list-inside space-y-2 text-slate-700 ml-14">
+                        <li>**Endpoint:** `POST https://api.recruitcrm.io/v1/candidates/{candidate_slug}`.</li>
+                        <li>**Autentificare:** Token Bearer în header-ul `Authorization`.</li>
+                        <li>**Request Body:** `multipart/form-data`.</li>
+                        <li>**Rate Limiting:** Monitorizați și gestionați limitele de rată (ex: 60 cereri/minut).</li>
+                    </ul>
+
+                    <h4 class="sub-step-title ml-10">Descoperirea Câmpurilor Custom:</h4>
+                    <p class="text-slate-700 ml-14">Folosiți `GET https://api.recruitcrm.io/v1/custom-fields/candidates` pentru a obține `field_id`, `field_name` și `field_type` pentru câmpurile custom. Acest lucru permite o mapare dinamică.</p>
+                    <div class="code-block ml-14">
+# Răspuns exemplu de la GET /custom-fields/candidates:
+[
+  {
+    "field_id": 123,
+    "field_name": "Nivel Experienta AI",
+    "field_type": "number" 
+  },
+  // ...
+]
+                    </div>
+                    <p class="text-slate-700 ml-14">**Recomandare:** Apelați acest endpoint la configurare pentru a crea o mapare între datele extrase și `field_id`-urile din Recruit CRM.</p>
+
+                    <h4 class="sub-step-title ml-10">Strategia de Mapare a Datelor:</h4>
+                    <ul class="list-disc list-inside space-y-1 text-slate-700 ml-18">
+                        <li>**Câmpuri Standard:** Mapați direct (ex: `email` -> `email`, `linkedin_url` -> `linkedin`).</li>
+                        <li>**Câmpuri Custom:** Folosiți `field_id`-urile obținute pentru a popula câmpurile custom definite în Recruit CRM.
+                            <ul class="list-circle list-inside ml-6">
+                                <li>Pentru array-uri (experiență, educație), creați seturi de câmpuri custom (Experiența 1 - Titlu, etc.) sau stocați un rezumat.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                     <div class="warning-note ml-14">
+                        <p class="font-semibold">Atenție la `multipart/form-data` pentru `custom_fields`!</p>
+                        <p class="text-sm">Formatul exact pentru trimiterea array-urilor de obiecte (cum ar fi `custom_fields`) în `multipart/form-data` trebuie verificat în documentația Recruit CRM sau prin experimentare.</p>
+                    </div>
+
+                    <h4 class="sub-step-title ml-10">Locația Logicii de Actualizare:</h4>
+                     <ul class="list-disc list-inside space-y-1 text-slate-700 ml-14">
+                        <li>În `background_cv_processing_task` (asincron).</li>
+                        <li>Sau un serviciu separat (ex: Cloud Function) declanșat de Firestore.</li>
+                     </ul>
+                </div>
+
+                <div>
+                    <h3 class="step-title"><span class="step-counter">4</span>Legătura cu CV-ul Original</h3>
+                     <ul class="list-disc list-inside space-y-1 text-slate-700 ml-10">
+                        <li>`source_candidate_id` este cheia.</li>
+                        <li>Opțional, adăugați URL-ul nostru de status în notele candidatului din Recruit CRM.</li>
+                     </ul>
+                </div>
+            
+                <div>
+                    <h3 class="step-title"><span class="step-counter">5</span>Considerații Specifice Recruit CRM</h3>
+                     <ul class="list-disc list-inside space-y-2 text-slate-700 ml-10">
+                        <li><strong class="font-medium">Documentația API Recruit CRM:</strong> Esențială.</li>
+                        <li><strong class="font-medium">Maparea Câmpurilor:</strong> Planificare atentă.</li>
+                        <li><strong class="font-medium">Testare Riguroasă.</strong></li>
+                        <li><strong class="font-medium">Gestionarea Erorilor și Limitelor de Rată.</strong></li>
+                        <li><strong class="font-medium">Confidențialitatea Datelor (GDPR).</strong></li>
+                     </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="considerations" class="content-section bg-white p-6 sm:p-8 rounded-lg shadow-xl">
+            <h2 class="section-title">Considerații Tehnice Suplimentare</h2>
+            <div class="text-content">
+                <p class="mb-8">
+                    Pentru o implementare robustă în producție, sunt luate în considerare următoarele aspecte:
+                </p>
+            </div>
+             <div class="space-y-6">
                 <div>
                     <h4 class="text-lg font-semibold text-sky-600">Securitate</h4>
-                    <ul class="list-disc list-inside text-slate-700 ml-4">
-                        <li>Utilizarea variabilelor de mediu și a Google Secret Manager pentru secrete.</li>
-                        <li>Validarea riguroasă a input-urilor.</li>
+                    <ul class="list-disc list-inside text-slate-700 ml-4 space-y-1">
+                        <li>Utilizarea variabilelor de mediu și a Google Secret Manager pentru stocarea securizată a cheilor API și a altor secrete.</li>
+                        <li>Validarea riguroasă a tuturor input-urilor pentru a preveni vulnerabilități (ex: injection).</li>
+                        <li>Implementarea de rate limiting pe endpoint-urile publice, dacă este necesar.</li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="text-lg font-semibold text-sky-600">Scalabilitate</h4>
-                    <ul class="list-disc list-inside text-slate-700 ml-4">
-                        <li>Arhitectură serverless (Cloud Run) pentru scalare automată.</li>
-                        <li>Procesare asincronă pentru gestionarea eficientă a cererilor.</li>
+                    <ul class="list-disc list-inside text-slate-700 ml-4 space-y-1">
+                        <li>Arhitectura serverless a Google Cloud Run permite scalarea automată a instanțelor în funcție de volumul de trafic.</li>
+                        <li>Procesarea asincronă a task-urilor de lungă durată (cum ar fi extragerea de date) previne blocarea cererilor.</li>
+                        <li>Pentru volume extrem de mari, se poate considera decuplarea cu Google Cloud Tasks pentru o mai mare robustețe a cozilor de mesaje.</li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-lg font-semibold text-sky-600">Robustețe</h4>
-                    <ul class="list-disc list-inside text-slate-700 ml-4">
-                        <li>Mecanisme de reîncercare pentru apelurile API externe.</li>
-                        <li>Gestionarea explicită a excepțiilor.</li>
+                    <h4 class="text-lg font-semibold text-sky-600">Robustețe și Fiabilitate</h4>
+                    <ul class="list-disc list-inside text-slate-700 ml-4 space-y-1">
+                        <li>Mecanisme de reîncercare cu backoff exponențial (folosind `tenacity`) pentru apelurile către API-uri externe (Gemini, Recruit CRM).</li>
+                        <li>Gestionarea explicită și detaliată a excepțiilor în toate etapele procesării.</li>
+                        <li>Idempotența endpoint-ului webhook pentru a preveni procesările duplicate.</li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="text-lg font-semibold text-sky-600">Logging și Monitorizare</h4>
-                    <ul class="list-disc list-inside text-slate-700 ml-4">
-                        <li>Logging structurat pentru analiză în Cloud Logging.</li>
-                        <li>Monitorizarea performanței și a erorilor.</li>
+                    <ul class="list-disc list-inside text-slate-700 ml-4 space-y-1">
+                        <li>Logging structurat și detaliat pentru a facilita diagnosticarea problemelor și monitorizarea fluxului de date.</li>
+                        <li>Integrarea cu Google Cloud Logging și Cloud Monitoring pentru vizualizarea logurilor, crearea de metrici și configurarea alertelor pentru erori critice sau probleme de performanță.</li>
                     </ul>
                 </div>
             </div>
@@ -737,7 +876,7 @@ curl -X POST "http://localhost:8000/webhook/cv" \
 
         const tabs = document.querySelectorAll('.tab-button');
         const contentSections = document.querySelectorAll('.content-section');
-
+        
         function showTab(tabId) {
             tabs.forEach(tab => {
                 if (tab.dataset.tab === tabId) {
@@ -753,20 +892,16 @@ curl -X POST "http://localhost:8000/webhook/cv" \
                     section.classList.remove('active');
                 }
             });
-             window.scrollTo({ top: 0, behavior: 'smooth' });
+             // Only scroll if not navigating via popstate (back/forward buttons)
+            if (event && event.type === 'click') {
+                 window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                showTab(tab.dataset.tab);
-            });
-        });
         
         const schemaContainer = document.getElementById('cvSchemaContainer');
 
         function renderSchema(schemaData, container, level = 0) {
             if (!schemaData || typeof schemaData !== 'object') {
-                console.error("Invalid schemaData provided to renderSchema:", schemaData);
                 return;
             }
 
@@ -774,12 +909,13 @@ curl -X POST "http://localhost:8000/webhook/cv" \
                 if (schemaData.hasOwnProperty(key)) {
                     const item = schemaData[key];
                     const div = document.createElement('div');
-                    div.className = `mb-3 p-3 rounded-md ${level === 0 ? 'bg-slate-50 shadow' : 'bg-slate-100'}`;
+                    div.className = `mb-3 p-3 rounded-md ${level === 0 ? 'bg-slate-50 shadow-sm' : 'bg-slate-100 ml-4'}`;
                     
                     const header = document.createElement('div');
                     header.className = 'flex justify-between items-start gap-x-4';
 
                     const titleContainer = document.createElement('div');
+                    titleContainer.className = 'flex-grow min-w-0'; // Allow title to shrink if needed
                     const title = document.createElement('h4');
                     title.className = `text-md font-semibold ${level === 0 ? 'text-sky-700' : 'text-sky-600'} schema-key`;
                     let titleText = key;
@@ -788,28 +924,28 @@ curl -X POST "http://localhost:8000/webhook/cv" \
                     }
                     title.textContent = titleText;
                     titleContainer.appendChild(title);
+                     header.appendChild(titleContainer);
 
                     if (item && item.description) {
                         const descriptionP = document.createElement('p');
-                        descriptionP.className = 'text-xs text-slate-500 mt-1 italic text-right flex-shrink-0 max-w-[50%]';
+                        descriptionP.className = 'text-xs text-slate-500 mt-0.5 italic text-right flex-shrink-0 max-w-[60%] sm:max-w-[50%] break-words';
                         descriptionP.textContent = item.description;
-                        titleContainer.appendChild(descriptionP); 
+                        header.appendChild(descriptionP); 
                     }
-                     header.appendChild(titleContainer);
                     
                     div.appendChild(header);
 
                     const detailsDiv = document.createElement('div');
-                    detailsDiv.className = 'schema-details mt-2 text-sm';
+                    detailsDiv.className = 'schema-details mt-2 text-sm space-y-1'; // Added space-y-1
                     
                     if (item && item.type) {
                          const typeP = document.createElement('p');
-                         typeP.innerHTML = `<strong class="text-slate-700">Tip:</strong> <span class="bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full text-xs">${item.type}</span>`;
+                         typeP.innerHTML = `<strong class="text-slate-700 font-medium">Tip:</strong> <span class="bg-sky-100 text-sky-800 px-2 py-0.5 rounded-full text-xs font-medium">${item.type}</span>`;
                          detailsDiv.appendChild(typeP);
                     }
                     if (item && item.required && Array.isArray(item.required) && item.required.length > 0) {
                         const requiredP = document.createElement('p');
-                        requiredP.innerHTML = `<strong class="text-slate-700">Câmpuri Obligatorii (în acest obiect):</strong> ${item.required.join(', ')}`;
+                        requiredP.innerHTML = `<strong class="text-slate-700 font-medium">Câmpuri Obligatorii (în obiect):</strong> <span class="text-slate-600">${item.required.join(', ')}</span>`;
                         detailsDiv.appendChild(requiredP);
                     }
 
@@ -818,13 +954,13 @@ curl -X POST "http://localhost:8000/webhook/cv" \
                         renderSchema(item.properties, detailsDiv, level + 1);
                     } else if (item && item.type === 'array' && item.items) {
                         const itemsHeader = document.createElement('p');
-                        itemsHeader.innerHTML = `<strong class="text-slate-700">Structura Elementelor din Array:</strong>`;
+                        itemsHeader.innerHTML = `<strong class="text-slate-700 font-medium">Structura Elementelor Array:</strong>`;
                         detailsDiv.appendChild(itemsHeader);
                         if (item.items.type === 'object' && item.items.properties) {
                             renderSchema(item.items.properties, detailsDiv, level + 1);
                         } else if (item.items.type) {
                              const itemTypeP = document.createElement('p');
-                             itemTypeP.innerHTML = `<strong class="text-slate-700">Tip element:</strong> <span class="bg-sky-100 text-sky-700 px-2 py-0.5 rounded-full text-xs">${item.items.type}</span>`;
+                             itemTypeP.innerHTML = `<strong class="text-slate-700 font-medium">Tip element:</strong> <span class="bg-sky-100 text-sky-800 px-2 py-0.5 rounded-full text-xs font-medium">${item.items.type}</span>`;
                              if (item.items.description) {
                                 itemTypeP.innerHTML += `<span class="italic text-xs text-slate-500 ml-2">(${item.items.description})</span>`;
                              }
@@ -853,12 +989,36 @@ curl -X POST "http://localhost:8000/webhook/cv" \
         }
         
         document.addEventListener('DOMContentLoaded', () => {
-            if (tabs.length > 0) {
-                showTab(tabs[0].dataset.tab);
-            }
+            const hash = window.location.hash.substring(1);
+            const initialTab = hash || 'overview';
+            showTab(initialTab); // Show initial tab without smooth scroll
+
+            tabs.forEach(tab => {
+                if (tab.dataset.tab === initialTab) {
+                    tab.classList.add('tab-active');
+                }
+                 tab.addEventListener('click', (event) => { // Pass event to showTab
+                    const tabId = tab.dataset.tab;
+                    showTab(tabId, event); // Pass event
+                    history.pushState(null, null, `#${tabId}`);
+                });
+            });
+
             if (schemaContainer) {
-                renderSchema(CV_EXTRACTION_SCHEMA, schemaContainer); // Corectat aici
+                renderSchema(CV_EXTRACTION_SCHEMA, schemaContainer);
             }
+
+            window.addEventListener('popstate', () => {
+                const hash = window.location.hash.substring(1);
+                showTab(hash || 'overview'); // Show tab on back/forward, no smooth scroll
+                 tabs.forEach(tab => {
+                    if (tab.dataset.tab === (hash || 'overview')) {
+                        tab.classList.add('tab-active');
+                    } else {
+                        tab.classList.remove('tab-active');
+                    }
+                });
+            });
         });
 
 
